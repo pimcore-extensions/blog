@@ -120,6 +120,57 @@
                 <visibleGridView></visibleGridView>
                 <visibleSearch></visibleSearch>
             </childs>
+<!--            <childs>
+                <fieldtype>Tagfield</fieldtype>
+                <tagskey></tagskey>
+                <options></options>
+                <width>400</width>
+                <height></height>
+                <queryColumnType>varchar(255)</queryColumnType>
+                <columnType>varchar(255)</columnType>
+                <phpdocType>string</phpdocType>
+                <name>tags</name>
+                <title>Tags</title>
+                <tooltip></tooltip>
+                <mandatory></mandatory>
+                <noteditable></noteditable>
+                <index></index>
+                <locked></locked>
+                <style></style>
+                <permissions></permissions>
+                <datatype>data</datatype>
+                <relationType></relationType>
+                <invisible></invisible>
+                <visibleGridView></visibleGridView>
+                <visibleSearch></visibleSearch>
+            </childs>-->
+            <childs>
+                <fieldtype>objects</fieldtype>
+                <width>505</width>
+                <height></height>
+                <maxItems></maxItems>
+                <queryColumnType>text</queryColumnType>
+                <phpdocType>array</phpdocType>
+                <relationType>1</relationType>
+                <lazyLoading>1</lazyLoading>
+                <classes>
+                    <classes>BlogCategory</classes>
+                </classes>
+                <name>categories</name>
+                <title>Categories</title>
+                <tooltip></tooltip>
+                <mandatory></mandatory>
+                <noteditable></noteditable>
+                <index></index>
+                <locked></locked>
+                <style></style>
+                <permissions></permissions>
+                <datatype>data</datatype>
+                <columnType></columnType>
+                <invisible></invisible>
+                <visibleGridView></visibleGridView>
+                <visibleSearch></visibleSearch>
+            </childs>
             <locked></locked>
         </childs>
         <locked></locked>

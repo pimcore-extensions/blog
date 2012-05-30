@@ -16,7 +16,7 @@
  * @category    Pimcore
  * @package     Plugin_Blog
  * @author      Rafał Gałka <rafal@modernweb.pl>
- * @copyright   Copyright (c) 2007-2011 ModernWeb (http://www.modernweb.pl)
+ * @copyright   Copyright (c) 2007-2012 ModernWeb (http://www.modernweb.pl)
  * @license     http://www.modernweb.pl/license/new-bsd     New BSD License
  */
 
@@ -26,7 +26,7 @@
  * @category    Pimcore
  * @package     Plugin_Blog
  * @author      Rafał Gałka <rafal@modernweb.pl>
- * @copyright   Copyright (c) 2007-2011 ModernWeb (http://www.modernweb.pl)
+ * @copyright   Copyright (c) 2007-2012 ModernWeb (http://www.modernweb.pl)
  */
 class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plugin_Interface
 {
@@ -40,71 +40,26 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
      */
     public static function install()
     {
-        // create classes
-        $blogEntry = self::_importClass('BlogEntry');
-        $blogCategory = self::_importClass('BlogCategory');
+        $install = new Blog_Plugin_Install();
 
-        // create object folders for entries and categories
-        $blog = Object_Folder::create(array(
-            'o_parentId' => 1,
-            'o_creationDate' => time(),
-            'o_userOwner' => self::_getUser()->getId(),
-            'o_userModification' => self::_getUser()->getId(),
-            'o_key' => 'blog',
-            'o_published' => true,
-        ));
-        Object_Folder::create(array(
-            'o_parentId' => $blog->getId(),
-            'o_creationDate' => time(),
-            'o_userOwner' => self::_getUser()->getId(),
-            'o_userModification' => self::_getUser()->getId(),
-            'o_key' => 'entries',
-            'o_published' => true,
-        ));
-        Object_Folder::create(array(
-            'o_parentId' => $blog->getId(),
-            'o_creationDate' => time(),
-            'o_userOwner' => self::_getUser()->getId(),
-            'o_userModification' => self::_getUser()->getId(),
-            'o_key' => 'categories',
-            'o_published' => true,
-        ));
+        // create object classes
+        $blogCategory = $install->createClass('BlogCategory');
+        $blogEntry = $install->createClass('BlogEntry');
+
+        // classmap
+        $install->setClassmap();
+
+        // create root object folder with subfolders
+        $blogFolder = $install->createFolders();
 
         // create custom view for blog objects
-        $customViews = Pimcore_Tool::getCustomViewConfig();
-        if (!$customViews) {
-            $customViews = array();
-            $customViewId = 1;
-        } else {
-            $last = end($customViews);
-            $customViewId = $last['id'] + 1;
-        }
-        $customViews[] = array(
-            'name' => 'Blog',
-            'condition' => '',
-            'icon' => '/pimcore/static/img/icon/rss.png',
-            'id' => $customViewId,
-            'rootfolder' => $blog->getFullPath(),
-            'showroot' => false,
-            'classes' => $blogEntry->getId() . ',' . $blogCategory->getId(),
-        );
-        $writer = new Zend_Config_Writer_Xml(array(
-            'config' => new Zend_Config(array('views'=> array('view' => $customViews))),
-            'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/customviews.xml'
+        $install->createCustomView($blogFolder, array(
+            $blogEntry->getId(),
+            $blogCategory->getId(),
         ));
-        $writer->write();
 
         // create static routes
-        $route = Staticroute::create();
-        $route->setName('blog-preview');
-        $route->setPattern('|^/blog/preview/([\d]+)|');
-        $route->setReverse('/blog/preview/%o_id');
-        $route->setModule('Blog');
-        $route->setController('entry');
-        $route->setAction('preview');
-        $route->setVariables('o_id');
-        $route->setPriority(1);
-        $route->save();
+        self::_importStaticRoutes();
 
         return self::getTranslate()->_('blog_installed_successfully');
     }
@@ -116,9 +71,12 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
     {
         try {
             // remove static routes
-            $route = Staticroute::getByName('blog-preview');
-            if ($route) {
-                $route->delete();
+            $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
+            foreach ($conf->routes->route as $def) {
+                $route = Staticroute::getByName($def->name);
+                if ($route) {
+                    $route->delete();
+                }
             }
 
             // remove custom view
@@ -245,6 +203,29 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
         $class->save();
 
         return $class;
+    }
+
+    protected static function _setClassmap()
+    {
+
+    }
+
+    protected static function _importStaticRoutes()
+    {
+        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
+
+        foreach ($conf->routes->route as $def) {
+            $route = Staticroute::create();
+            $route->setName($def->name);
+            $route->setPattern($def->pattern);
+            $route->setReverse($def->reverse);
+            $route->setModule($def->module);
+            $route->setController($def->controller);
+            $route->setAction($def->action);
+            $route->setVariables($def->variables);
+            $route->setPriority($def->priority);
+            $route->save();
+        }
     }
 
     /**
