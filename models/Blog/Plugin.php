@@ -40,26 +40,31 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
      */
     public static function install()
     {
-        $install = new Blog_Plugin_Install();
+        try {
+            $install = new Blog_Plugin_Install();
 
-        // create object classes
-        $blogCategory = $install->createClass('BlogCategory');
-        $blogEntry = $install->createClass('BlogEntry');
+            // create object classes
+            $blogCategory = $install->createClass('BlogCategory');
+            $blogEntry = $install->createClass('BlogEntry');
 
-        // classmap
-        $install->setClassmap();
+            // classmap
+            $install->setClassmap();
 
-        // create root object folder with subfolders
-        $blogFolder = $install->createFolders();
+            // create root object folder with subfolders
+            $blogFolder = $install->createFolders();
 
-        // create custom view for blog objects
-        $install->createCustomView($blogFolder, array(
-            $blogEntry->getId(),
-            $blogCategory->getId(),
-        ));
+            // create custom view for blog objects
+            $install->createCustomView($blogFolder, array(
+                $blogEntry->getId(),
+                $blogCategory->getId(),
+            ));
 
-        // create static routes
-        self::_importStaticRoutes();
+            // create static routes
+            $install->importStaticRoutes();
+        } catch(Exception $e) {
+            logger::crit($e);
+            return self::getTranslate()->_('blog_install_failed');
+        }
 
         return self::getTranslate()->_('blog_installed_successfully');
     }
@@ -176,64 +181,6 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
             array('delimiter' => ',')
         );
         return self::$_translate;
-    }
-
-    /**
-     * @param string $name
-     * @return Object_Class
-     */
-    protected static function _importClass($name)
-    {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Blog/install/class_$name.xml");
-
-        $class = Object_Class::create();
-        $class->setName($name);
-        $class->setUserOwner(self::_getUser()->getId());
-        $class->setLayoutDefinitions(
-            Object_Class_Service::generateLayoutTreeFromArray(
-                $conf->layoutDefinitions->toArray()
-            )
-        );
-        $class->setIcon($conf->icon);
-        $class->setAllowInherit($conf->allowInherit);
-        $class->setAllowVariants($conf->allowVariants);
-        $class->setParentClass($conf->parentClass);
-        $class->setPreviewUrl($conf->previewUrl);
-        $class->setPropertyVisibility($conf->propertyVisibility);
-        $class->save();
-
-        return $class;
-    }
-
-    protected static function _setClassmap()
-    {
-
-    }
-
-    protected static function _importStaticRoutes()
-    {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
-
-        foreach ($conf->routes->route as $def) {
-            $route = Staticroute::create();
-            $route->setName($def->name);
-            $route->setPattern($def->pattern);
-            $route->setReverse($def->reverse);
-            $route->setModule($def->module);
-            $route->setController($def->controller);
-            $route->setAction($def->action);
-            $route->setVariables($def->variables);
-            $route->setPriority($def->priority);
-            $route->save();
-        }
-    }
-
-    /**
-     * @return User
-     */
-    protected static function _getUser()
-    {
-        return Zend_Registry::get('pimcore_user');
     }
 
 }
