@@ -55,6 +55,20 @@ class Blog_Plugin_Install
 
     public function setClassmap()
     {
+        try {
+            $conf = new Zend_Config_Xml(PIMCORE_CONFIGURATION_DIRECTORY . '/classmap.xml');
+            $classmap = $conf->toArray();
+        } catch(Exception $e) {
+            $classmap = array();
+        }
+
+        $classmap['Object_BlogEntry'] = 'Blog_Entry';
+
+        $writer = new Zend_Config_Writer_Xml(array(
+            'config' => new Zend_Config($classmap),
+            'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/classmap.xml'
+        ));
+        $writer->write();
     }
 
     public function createFolders()
