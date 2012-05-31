@@ -60,7 +60,7 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
             ));
 
             // create static routes
-            $install->importStaticRoutes();
+            $install->createStaticRoutes();
         } catch(Exception $e) {
             logger::crit($e);
             return self::getTranslate()->_('blog_install_failed');
@@ -75,46 +75,23 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
     public static function uninstall()
     {
         try {
+            $install = new Blog_Plugin_Install();
+
             // remove static routes
-            $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
-            foreach ($conf->routes->route as $def) {
-                $route = Staticroute::getByName($def->name);
-                if ($route) {
-                    $route->delete();
-                }
-            }
+            $install->removeStaticRoutes();
 
             // remove custom view
-            $customViews = Pimcore_Tool::getCustomViewConfig();
-            if ($customViews) {
-                foreach ($customViews as $key => $view) {
-                    if ($view['name'] == 'Blog') {
-                        unset($customViews[$key]);
-                        break;
-                    }
-                }
-                $writer = new Zend_Config_Writer_Xml(array(
-                    'config' => new Zend_Config(array('views'=> array('view' => $customViews))),
-                    'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/customviews.xml'
-                ));
-                $writer->write();
-            }
+            $install->removeCustomView();
 
             // remove object folder with all childs
-            $blogFolder = Object_Folder::getByPath('/blog');
-            if ($blogFolder) {
-                $blogFolder->delete();
-            }
+            $install->removeFolders();
+
+            // classmap
+            $install->unsetClassmap();
 
             // remove classes
-            $class = Object_Class::getByName('BlogEntry');
-            if ($class) {
-                $class->delete();
-            }
-            $class = Object_Class::getByName('BlogCategory');
-            if ($class) {
-                $class->delete();
-            }
+            $install->removeClass('BlogEntry');
+            $install->removeClass('BlogCategory');
 
             return self::getTranslate()->_('blog_uninstalled_successfully');
         } catch (Exception $e) {

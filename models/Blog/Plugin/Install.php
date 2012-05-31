@@ -30,13 +30,18 @@
  */
 class Blog_Plugin_Install
 {
+    /**
+     * @var User
+     */
+    protected $_user;
+
     public function createClass($name)
     {
         $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Blog/install/class_$name.xml");
 
         $class = Object_Class::create();
         $class->setName($name);
-        $class->setUserOwner(self::_getUser()->getId());
+        $class->setUserOwner($this->_getUser()->getId());
         $class->setLayoutDefinitions(
             Object_Class_Service::generateLayoutTreeFromArray(
                 $conf->layoutDefinitions->toArray()
@@ -53,10 +58,20 @@ class Blog_Plugin_Install
         return $class;
     }
 
+    public function removeClass($name)
+    {
+        $class = Object_Class::getByName($name);
+        if ($class) {
+            $class->delete();
+        }
+    }
+
     public function setClassmap()
     {
+        $classmapXml = PIMCORE_CONFIGURATION_DIRECTORY . '/classmap.xml';
+
         try {
-            $conf = new Zend_Config_Xml(PIMCORE_CONFIGURATION_DIRECTORY . '/classmap.xml');
+            $conf = new Zend_Config_Xml($classmapXml);
             $classmap = $conf->toArray();
         } catch(Exception $e) {
             $classmap = array();
@@ -66,9 +81,26 @@ class Blog_Plugin_Install
 
         $writer = new Zend_Config_Writer_Xml(array(
             'config' => new Zend_Config($classmap),
-            'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/classmap.xml'
+            'filename' => $classmapXml
         ));
         $writer->write();
+    }
+
+    public function unsetClassmap()
+    {
+        $classmapXml = PIMCORE_CONFIGURATION_DIRECTORY . '/classmap.xml';
+
+        try {
+            $conf = new Zend_Config_Xml($classmapXml);
+            $classmap = $conf->toArray();
+            unset($classmap['Object_BlogEntry']);
+
+            $writer = new Zend_Config_Writer_Xml(array(
+                'config' => new Zend_Config($classmap),
+                'filename' => $classmapXml
+            ));
+            $writer->write();
+        } catch(Exception $e) {}
     }
 
     public function createFolders()
@@ -76,29 +108,37 @@ class Blog_Plugin_Install
         $root = Object_Folder::create(array(
             'o_parentId' => 1,
             'o_creationDate' => time(),
-            'o_userOwner' => self::_getUser()->getId(),
-            'o_userModification' => self::_getUser()->getId(),
+            'o_userOwner' => $this->_getUser()->getId(),
+            'o_userModification' => $this->_getUser()->getId(),
             'o_key' => 'blog',
             'o_published' => true,
         ));
         Object_Folder::create(array(
             'o_parentId' => $root->getId(),
             'o_creationDate' => time(),
-            'o_userOwner' => self::_getUser()->getId(),
-            'o_userModification' => self::_getUser()->getId(),
+            'o_userOwner' => $this->_getUser()->getId(),
+            'o_userModification' => $this->_getUser()->getId(),
             'o_key' => 'entries',
             'o_published' => true,
         ));
         Object_Folder::create(array(
             'o_parentId' => $root->getId(),
             'o_creationDate' => time(),
-            'o_userOwner' => self::_getUser()->getId(),
-            'o_userModification' => self::_getUser()->getId(),
+            'o_userOwner' => $this->_getUser()->getId(),
+            'o_userModification' => $this->_getUser()->getId(),
             'o_key' => 'categories',
             'o_published' => true,
         ));
 
         return $root;
+    }
+
+    public function removeFolders()
+    {
+        $blogFolder = Object_Folder::getByPath('/blog');
+        if ($blogFolder) {
+            $blogFolder->delete();
+        }
     }
 
     public function createCustomView($rootFolder, array $classIds)
@@ -127,7 +167,25 @@ class Blog_Plugin_Install
         $writer->write();
     }
 
-    public function importStaticRoutes()
+    public function removeCustomView()
+    {
+        $customViews = Pimcore_Tool::getCustomViewConfig();
+        if ($customViews) {
+            foreach ($customViews as $key => $view) {
+                if ($view['name'] == 'Blog') {
+                    unset($customViews[$key]);
+                    break;
+                }
+            }
+            $writer = new Zend_Config_Writer_Xml(array(
+                'config' => new Zend_Config(array('views'=> array('view' => $customViews))),
+                'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/customviews.xml'
+            ));
+            $writer->write();
+        }
+    }
+
+    public function createStaticRoutes()
     {
         $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
 
@@ -145,12 +203,28 @@ class Blog_Plugin_Install
         }
     }
 
+    public function removeStaticRoutes()
+    {
+        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
+
+        foreach ($conf->routes->route as $def) {
+            $route = Staticroute::getByName($def->name);
+            if ($route) {
+                $route->delete();
+            }
+        }
+    }
+
     /**
      * @return User
      */
-    protected static function _getUser()
+    protected function _getUser()
     {
-        return Zend_Registry::get('pimcore_user');
+        if (!$this->_user) {
+            $this->_user = Zend_Registry::get('pimcore_user');
+        }
+
+        return $this->_user;
     }
 
 }
