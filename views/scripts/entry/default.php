@@ -1,107 +1,54 @@
-<div class="container_12">
-    <div class="grid_3">&nbsp;</div>
-    <div class="grid_9">
+<?php $this->layout()->setLayout('layout') ?>
+<div class="container blog blog-list">
+    <div class="row">
+        <div class="span9">
 
-        <div class="content-box">
-            <div class="content-box-shadow">
+            <h1><?= $this->input('page-header') ?></h1>
 
-                <div class="corner"></div>
+            <?= $this->paginator ?>
 
-                <div class="blog-header"><h1><?= $this->input('page-header') ?></h1></div>
+            <?php foreach ($this->paginator as $entry): $entry instanceof Blog_Entry; ?>
 
-                <div class="separator"></div>
+            <h2>
+                <a href="<?=$this->url(array(
+                    'key' => $entry->getUrlPath(),
+                    'page' => null, 'perpage' => null
+                ), 'blog-show')?>"
+                ><?=$entry->getTitle()?></a>
+            </h2>
+            <small><?=$entry->getDate()->toString('FFFFF');?></small>
 
-                <div class="blog-columns">
+            <div class="content">
+                <p>
+                    <?=(trim($entry->getSummary()))
+                        ? $entry->getSummary()
+                        : Website_Tool_Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200)?>
+                </p>
+            </div>
 
-                    <div class="blog-column-left">
+            <?php if (count($entry->getTags())): ?>
+            <div class="tags">
 
-                        <div class="blog-content">
-
-                            <!-- start_search -->
-
-                            <!--<?= $this->paginator ?>-->
-
-
-                            <?php foreach ($this->paginator as $entry): $entry instanceof Blog_Entry; ?>
-
-                                <div class="blog-post-title"><h3><a href="<?= $entry->getFullPath() ?>"><?= $entry->getTitle(); ?></a></h3></div>
-                                <div class="blog-post-date"><small><?= $entry->getDate()->toString('FFFFF'); ?></small></div>
-
-                                <div class="resizeable-text"><div class="blog-post-entry">
-                                    <p>
-                                        <?=
-                                        (trim($entry->getSummary())) ? $entry->getSummary() : Website_Tool_Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200)
-                                        ?>
-                                    </p>
-                                </div></div>
-
-                                <?php if (count($entry->getTags())): ?>
-                                    <div class="blog-post-tags"><small>
-                                            tagi:
-                                            <?php foreach ($entry->getTags() as $tag): ?>
-                                                <a href="<?=
-                                    $this->url(array(
-                                        'tag' => $tag['url'],
-                                        'page' => null, 'perpage' => null
-                                            ), 'blog-tag')
-                                                ?>"><?= $tag['tag'] ?></a>
-                                    <?php endforeach; ?>
-                                        </small></div>
-    <?php endif; ?>
-
-                                <div class="separator"></div>
-
-                            <?php endforeach; ?>
-
-                            <!-- end_search -->
-
-<?= $this->paginator ?>
-
-
-                        </div>
-                    </div>
-
-                    <div class="blog-column-right">
-
-                        <?php if (!$this->editmode) : ?>
-                            <?php if (!$this->wysiwyg("blog-sidebar-content")->isEmpty()) : ?>
-                            <div style="padding: 12px 16px; padding-bottom: 0">
-                            <div class="resizeable-text text">
-                                <div>
-                                    <?= $this->wysiwyg("blog-sidebar-content"); ?>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="separator"></div>
-                            <?php endif; ?>
-                        <?php else : ?>
-
-                            <?= $this->wysiwyg("blog-sidebar-content", array(
-                                        "contentsCss" => '/website/static/css/wysiwyg.css',
-                                        "width" => 192
-                                        ));
-                            ?>
-
-
-                        <?php endif; ?>
-
-
-
-
-                        <?php for ($i = 1; $i <= 3; $i++): ?>
-    <?= $this->snippet("blog-snippet-$i") ?>
-<?php endfor; ?>
-
-                    </div>
-
-                    <div class="clear"></div>
-
-                </div>
+            <?php foreach ($entry->getTags() as $tag): ?>
+            <a href="<?=$this->url(array(
+                'tag' => $tag['url'],
+                'page' => null, 'perpage' => null
+            ), 'blog-tag')?>"
+            ><?= $tag['tag'] ?></a>
+            <?php endforeach; ?>
 
             </div>
+            <?php endif; ?>
+
+            <?php endforeach; ?>
+
+            <?= $this->paginator ?>
+
         </div>
-
-
-
+        <div class="span3">
+            <?php for($i = 1; $i <= 3; $i++): ?>
+                <?=$this->snippet("blog-snippet-$i")?>
+            <?php endfor; ?>
+        </div>
     </div>
 </div>
