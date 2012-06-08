@@ -21,5 +21,15 @@
             <variables>key</variables>
             <priority>1</priority>
         </route>
+        <route>
+            <name>blog-category</name>
+            <pattern>|^/blog/category/([-_/\w]+)|</pattern>
+            <reverse>/blog/category/%cat/</reverse>
+            <module>Blog</module>
+            <controller>entry</controller>
+            <action>category</action>
+            <variables>cat</variables>
+            <priority>1</priority>
+        </route>
     </routes>
 </zend-config>

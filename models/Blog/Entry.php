@@ -40,15 +40,6 @@ class Blog_Entry extends Object_BlogEntry
      * @return array
      * @todo implementation
      */
-    public function getCategories()
-    {
-        return array();
-    }
-
-    /**
-     * @return array
-     * @todo implementation
-     */
     public function getTags()
     {
         return array();
