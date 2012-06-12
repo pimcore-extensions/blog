@@ -35,5 +35,5 @@ Action: default
 
 You can add/modify/remove entry/category data fields using default pimcore Object Classes interface.
 
-You can overwrite any of default view scripts by copying `Blog/views/scripts/:controller/:action.php` into `website/views/scripts/blog/:controller/:action.php`
+You can overwrite any of default view scripts by copying `Blog/views/scripts/:controller/:action.php` into `website/views/scripts/blog/:controller/:action.php`.
 Your custom view script will be used automatically instead of default one. This will allow you to update plugin without loosing your project markup.
