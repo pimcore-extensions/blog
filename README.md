@@ -24,7 +24,8 @@ If everything went smoothly you will find `Blog` custom view just below `Objects
 Now you can add some entries/categories.
 
 Create document named eg. `Blog` and set in `Settings` -> `Controller and View Settings`:
-```Module: Blog
+```
+Module: Blog
 Controller: entry
 Action: default
 ```
