@@ -11,9 +11,8 @@
 
             <h2>
                 <a href="<?=$this->url(array(
-                    'key' => $entry->getUrlPath(),
-                    'page' => null, 'perpage' => null
-                ), 'blog-show')?>"
+                    'key' => $entry->getUrlPath()
+                ), 'blog-show', false, false)?>"
                 ><?=$entry->getTitle()?></a>
             </h2>
             <small><?=$entry->getDate()->toString('FFFFF');?></small>
