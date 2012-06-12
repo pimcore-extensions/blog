@@ -64,6 +64,16 @@ abstract class Blog_Controller_Action extends Pimcore_Controller_Action_Frontend
 
         $this->_translate = $this->initTranslation();
 
+        $this->view->setScriptPath(
+            array_merge(
+                array(
+                    PIMCORE_WEBSITE_PATH . '/views/layouts/',
+                    PIMCORE_WEBSITE_PATH . '/views/blog/'
+                ),
+                $this->view->getScriptPaths()
+            )
+        );
+
         // additional helpers
         $this->_helper->addPrefix('Modern_Controller_Action_Helper');
         $this->view->addHelperPath('Modern/View/Helper', 'Modern_View_Helper_');

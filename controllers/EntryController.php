@@ -44,16 +44,6 @@ class Blog_EntryController extends Blog_Controller_Action
     {
         parent::init();
 
-        $this->view->setScriptPath(
-            array_merge(
-                array(
-                    __DIR__ . '/../../../website/views/layouts/',
-                    __DIR__ . '/../../../website/views/blog/'
-                ),
-                $this->view->getScriptPaths()
-            )
-        );
-
 //        $options = Pimcore_Config::getWebsiteConfig(false)->blog;
         $options = array();
         $this->_blog = new Blog($options);
