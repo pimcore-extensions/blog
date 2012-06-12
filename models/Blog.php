@@ -113,22 +113,17 @@ class Blog extends Website_Model
     }
 
     /**
-     * @param string $category
+     * @param Object_BlogCategory $category
      * @param integer $page
      * @param integer $perpage
      * @return Zend_Paginator
      */
-    public function getListByCategory($category, $page = 1, $perpage = 10)
+    public function getListByCategory(Object_BlogCategory $category, $page = 1, $perpage = 10)
     {
-        $cat = Object_BlogCategory::getByPath('/categories/' . $category);
-        if(!$cat) {
-            throw new Blog_Exception("Category $category doesn't exist");
-        }
-
         $list = $this->_getList();
-        $list->setCondition("categories LIKE ?", array("%,{$cat->getId()},%"));
+        $list->setCondition("categories LIKE ?", array("%,{$category->getId()},%"));
 
-        return $this->_paginate($list, $page, $perPage);
+        return $this->_paginate($list, $page, $perpage);
     }
 
     /**

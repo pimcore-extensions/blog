@@ -82,6 +82,11 @@ abstract class Blog_Controller_Action extends Pimcore_Controller_Action_Frontend
         Modern_View_Helper_FlashMessenger::setPartial('partial/messenger.php');
 
         Zend_View_Helper_PaginationControl::setDefaultViewPartial('partial/paginator-search.php');
+
+        // fix main blog list pagination
+        if(!Staticroute::getCurrentRoute() instanceof Staticroute) {
+            Staticroute::setCurrentRoute(Staticroute::getByName('blog'));
+        }
     }
 
 }

@@ -3,7 +3,7 @@
 
     <?php $class = (isset($this->previous)) ? '' : 'disabled' ?>
     <?php $href = (isset($this->previous))
-        ? $this->url(array('page' => $this->previous), 'blog', false, false)
+        ? $this->url(array('page' => $this->previous), null, false, false)
         : '' ?>
     <li class="<?=$class?>">
         <a href="<?=$href?>">
@@ -15,7 +15,7 @@
         <?php $class = ($page == $this->current) ? 'active' : '' ?>
         <?php $href = ($page == $this->current)
             ? ''
-            : $this->url(array('page' => $page), 'blog', false, false) ?>
+            : $this->url(array('page' => $page), null, false, false) ?>
         <li class="<?=$class?>">
             <a href="<?=$href?>">
                 <?=$page?>
@@ -25,7 +25,7 @@
 
     <?php $class = (isset($this->next)) ? '' : 'disabled' ?>
     <?php $href = (isset($this->next))
-        ? $this->url(array('page' => $this->next), 'blog', false, false)
+        ? $this->url(array('page' => $this->next), null, false, false)
         : '' ?>
     <li class="<?=$class?>">
         <a href="<?=$href?>">

@@ -3,7 +3,13 @@
     <div class="row">
         <div class="span9">
 
-            <h1><?= $this->input('page-header') ?></h1>
+            <h1>
+            <?php if ($this->category): ?>
+                <?= $this->category->getName() ?>
+            <?php else: ?>
+                <?= $this->input('page-header') ?>
+            <?php endif; ?>
+            </h1>
 
             <?= $this->paginator ?>
 

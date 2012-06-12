@@ -129,15 +129,23 @@ class Blog_EntryController extends Blog_Controller_Action
     {
         $this->enableLayout();
 
+        $cat = $this->_getParam('cat');
+        $category = Object_BlogCategory::getByPath('/blog/categories/' . $cat);
+        if(!$category) {
+            throw new Blog_Exception("Category $cat doesn't exist");
+        }
+
         try {
             $this->view->paginator = $this->_blog->getListByCategory(
-                $this->_getParam('cat'),
+                $category,
                 $this->_getParam('page', 1),
                 $this->_getParam('perpage', 10)
             );
         } catch (Exception $e) {
             throw new Zend_Controller_Action_Exception($e->getMessage(), 404);
         }
+
+        $this->view->category = $category;
 
         $this->render('default');
     }

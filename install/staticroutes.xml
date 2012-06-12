@@ -33,7 +33,7 @@
         </route>
         <route>
             <name>blog-category</name>
-            <pattern>|^/blog/category/([-_/\w]+)|</pattern>
+            <pattern>|^/blog/category/([-_\w]+)[/]{0,1}|</pattern>
             <reverse>/blog/category/%cat/</reverse>
             <module>Blog</module>
             <controller>entry</controller>

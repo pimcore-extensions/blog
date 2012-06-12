@@ -15,8 +15,7 @@
                 <small>kategorie:
                 <?php foreach($this->entry->getCategories() as $category): ?>
                     <a href="<?=$this->url(array(
-                        'cat' => $category->getKey(),
-                        'page' => null, 'perpage' => null
+                        'cat' => $category->getKey()
                         ), 'blog-category')?>"><?=$category->getName()?></a>
                     <?php endforeach; ?>
                 </small>
@@ -32,8 +31,7 @@
                 <small>tagi:
                 <?php foreach($this->entry->getTags() as $tag): ?>
                     <a href="<?=$this->url(array(
-                        'tag' => $tag['url'],
-                        'page' => null, 'perpage' => null
+                        'tag' => $tag['url']
                         ), 'blog-tag')?>"><?=$tag['tag']?></a>
                 <?php endforeach; ?>
                 </small>
