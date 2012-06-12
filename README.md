@@ -15,6 +15,7 @@ Under development for now. Stay tuned! :)
 Just like other Pimcore plugins:
 
 *   navigate to `Extras -> Extensions -> Download Extensions`, find Blog plugin on list and choose "Download"
+    **(plugin will be available in Extension Hub after first stable release)**
 *   [OR] clone git repository into `/plugin/Blog` directory
 *   navigate to `Extras -> Extensions -> Manage Extensions` in admin panel
 *   enable & install plugin
