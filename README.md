@@ -24,13 +24,14 @@ If everything went smoothly you will find `Blog` custom view just below `Objects
 Now you can add some entries/categories.
 
 Create document named eg. `Blog` and set in `Settings` -> `Controller and View Settings`:
-Module: Blog
+```Module: Blog
 Controller: entry
 Action: default
+```
 
 ## Customization ##
 
 You can add/modify/remove entry/category data fields using default pimcore Object Classes interface.
 
-You can overwrite any of default view scripts by copying Blog/views/scripts/:controller/:action.php into website/views/scripts/blog/:controller/:action.php
+You can overwrite any of default view scripts by copying `Blog/views/scripts/:controller/:action.php` into `website/views/scripts/blog/:controller/:action.php`
 Your custom view script will be used automatically instead of default one. This will allow you to update plugin without loosing your project markup.
