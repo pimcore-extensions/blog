@@ -67,6 +67,7 @@ abstract class Blog_Controller_Action extends Pimcore_Controller_Action_Frontend
         $this->view->setScriptPath(
             array_merge(
                 array(
+                    PIMCORE_WEBSITE_PATH . '/views/scripts/',
                     PIMCORE_WEBSITE_PATH . '/views/layouts/',
                     PIMCORE_WEBSITE_PATH . '/views/blog/'
                 ),
