@@ -203,7 +203,7 @@ class Blog_EntryController extends Blog_Controller_Action
     public function feedAction()
     {
         try {
-            $feed = $this->_blog->getFeed($this->_getParam('type'));
+            $feed = $this->_blog->getFeed($this->_getParam('type', 'rss'));
         } catch (Exception $e) {
             throw new Zend_Controller_Action_Exception($e->getMessage(), 404);
         }

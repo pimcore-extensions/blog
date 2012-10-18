@@ -255,7 +255,7 @@ class Blog extends Website_Model
         $feed = array(
             'title' => '',
             'copyright' => '',
-            'link'  => $host . $url->url(array('type' => $format), 'blog-feed'),
+            'link'  => $host . 'plugin/Blog/entry/feed/format/' . $format,
             'charset' => 'utf-8',
             'language' => 'pl-pl',
             'lastUpdate' => time(),
@@ -270,7 +270,7 @@ class Blog extends Website_Model
             $entry instanceof Object_BlogEntry;
             $feed['entries'][] = array(
                 'title' => $entry->getTitle(),
-                'link'  => $host . $url->url(array('key' => $entry->getKey()), 'blog-entry'),
+                'link'  => $host . $url->url(array('key' => $entry->getKey()), 'blog-show'),
                 'description' => (trim($entry->getSummary()))
                     ? $entry->getSummary()
                     : Website_Tool_Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200),
