@@ -10,7 +10,7 @@ It's functional but still under development. Try, comment, fork, improve or stay
 *   Tags and tag cloud provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration **(soon)**
 *   Comments provided by [Commenting](http://www.pimcore.org/resources/extensions/detail/Commenting) plugin integration **(soon)**
 
-## Installation ##
+## Setup ##
 
 Just like other Pimcore plugins:
 
@@ -30,6 +30,15 @@ Module: Blog
 Controller: entry
 Action: default
 ```
+
+### Snippets ###
+
+Plugin provides some snippets that you can place anywhere on your site (eg. sidebar, mainpage).
+Just add new empty snippet and set module/controller/action in the `Settings` tab:
+*   latest entries - Blog/snippet/latest
+*   categories list - Blog/snippet/categories
+*   calendar - Blog/snippet/calendar
+*   links to rss/atom feed - Blog/snippet/feed
 
 ## Customization ##
 
