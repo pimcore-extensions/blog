@@ -56,7 +56,11 @@ class Blog_SnippetController extends Blog_Controller_Action
 
     public function categoriesAction()
     {
-//        $this->view->list = $this->_blog->getCategories();
+        // $this->_request doesn't have params from staticroute
+        $request = $this->getFrontController()->getRequest();
+
+        $this->view->list = $this->_blog->getCategories();
+        $this->view->category = $request->getParam('cat');
     }
 
 }

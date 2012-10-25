@@ -1,14 +1,14 @@
 # Blog plugin for [pimcore](http://www.pimcore.org/) #
 
-Under development for now. Stay tuned! :)
+It's functional but still under development. Try, comment, fork, improve or stay tuned! :)
 
 ## Features (status) ##
 
 *   Entries and categories build on pimcore [data objects](http://www.pimcore.org/wiki/display/PIMCORE/Data+Objects) **(ready)**
 *   RSS feed **(ready)**
-*   Snippets with categories / calendar / feed links **(in progress)**
-*   Tags and tag cloud provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration
-*   Comments provided by [Commenting](http://www.pimcore.org/resources/extensions/detail/Commenting) plugin integration
+*   Snippets with categories / calendar / feed links / latest entries **(in progress)**
+*   Tags and tag cloud provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration **(soon)**
+*   Comments provided by [Commenting](http://www.pimcore.org/resources/extensions/detail/Commenting) plugin integration **(soon)**
 
 ## Installation ##
 
