@@ -13,7 +13,8 @@
 
             <?= $this->paginator ?>
 
-            <?php foreach ($this->paginator as $entry): $entry instanceof Blog_Entry; ?>
+            <?php foreach ($this->paginator as $entry): ?>
+            <?php /* @var $entry Blog_Entry */ ?>
 
             <h2>
                 <a href="<?=$this->url(array(

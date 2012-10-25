@@ -1,7 +1,7 @@
 <?php if(count($this->list)): ?>
 
     <div class="snippet categories well">
-        <h3><?=$this->input('page-header')?></h3>
+        <h3><?= $this->input('snippet-header') ?></h3>
         <ul>
         <?php foreach($this->list as $category): if($category->getEntryCount()): ?>
             <li>

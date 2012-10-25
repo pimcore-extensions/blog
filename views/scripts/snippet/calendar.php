@@ -1,7 +1,7 @@
 <?php if (count($this->calendar)): ?>
 
     <div class="snippet calendar well">
-        <h3><?= $this->input('page-header') ?></h3>
+        <h3><?= $this->input('snippet-header') ?></h3>
 
         <ul>
             <?php

@@ -44,6 +44,16 @@ class Blog_SnippetController extends Blog_Controller_Action
         $this->_blog = new Blog($options);
     }
 
+    public function latestAction()
+    {
+        $limit = (int) $this->document->getProperty('limit');
+        if (!$limit) {
+            $limit = 3;
+        }
+
+        $this->view->entries = $this->_blog->getList(1, $limit)->getCurrentItems();
+    }
+
     public function calendarAction()
     {
         // $this->_request doesn't have params from staticroute
