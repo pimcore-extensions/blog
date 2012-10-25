@@ -4,7 +4,7 @@
         <route>
             <name>blog</name>
             <pattern>|^/blog|</pattern>
-            <reverse>/blog/</reverse>
+            <reverse>/blog</reverse>
             <module>Blog</module>
             <controller>entry</controller>
             <action>default</action>
@@ -14,7 +14,7 @@
         <route>
             <name>blog-preview</name>
             <pattern>|^/blog/preview/([\d]+)|</pattern>
-            <reverse>/blog/preview/%o_id/</reverse>
+            <reverse>/blog/preview/%o_id</reverse>
             <module>Blog</module>
             <controller>entry</controller>
             <action>preview</action>
@@ -24,7 +24,7 @@
         <route>
             <name>blog-show</name>
             <pattern>|^/blog/entry/([-_/\w]+)|</pattern>
-            <reverse>/blog/entry/%key/</reverse>
+            <reverse>/blog/entry/%key</reverse>
             <module>Blog</module>
             <controller>entry</controller>
             <action>show</action>
@@ -33,12 +33,22 @@
         </route>
         <route>
             <name>blog-category</name>
-            <pattern>|^/blog/category/([-_\w]+)[/]{0,1}|</pattern>
-            <reverse>/blog/category/%cat/</reverse>
+            <pattern>|^/blog/category/([-_\w]+)|</pattern>
+            <reverse>/blog/category/%cat</reverse>
             <module>Blog</module>
             <controller>entry</controller>
             <action>category</action>
             <variables>cat</variables>
+            <priority>1</priority>
+        </route>
+        <route>
+            <name>blog-calendar</name>
+            <pattern>|^/blog/calendar/([\d]*)/([\d]*)$|</pattern>
+            <reverse>/blog/calendar/%year/{%month}</reverse>
+            <module>Blog</module>
+            <controller>entry</controller>
+            <action>calendar</action>
+            <variables>year,month</variables>
             <priority>1</priority>
         </route>
     </routes>

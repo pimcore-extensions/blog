@@ -225,7 +225,14 @@ class Blog extends Website_Model
                 if (!isset($calendar[$year])) {
                     $calendar[$year] = array();
                 }
-                $calendar[$year][$date->get(Zend_Date::MONTH_SHORT)] = $count;
+                $month = $date->get(Zend_Date::MONTH_SHORT);
+                $calendar[$year][$month] = array(
+                    'month' => Zend_Locale_Data::getContent(
+                        Zend_Registry::get('Zend_Locale'),
+                        'month', array('gregorian', 'format', 'wide', $month)
+                    ),
+                    'count' => $count,
+                );
             }
 
             if ($date->isEarlier($endDate)) {

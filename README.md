@@ -6,7 +6,7 @@ Under development for now. Stay tuned! :)
 
 *   Entries and categories build on pimcore [data objects](http://www.pimcore.org/wiki/display/PIMCORE/Data+Objects) **(ready)**
 *   RSS feed **(ready)**
-*   Snippets with categories / calendar
+*   Snippets with categories / calendar / feed links **(in progress)**
 *   Tags and tag cloud provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration
 *   Comments provided by [Commenting](http://www.pimcore.org/resources/extensions/detail/Commenting) plugin integration
 
