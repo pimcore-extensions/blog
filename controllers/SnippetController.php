@@ -63,4 +63,8 @@ class Blog_SnippetController extends Blog_Controller_Action
         $this->view->category = $request->getParam('cat');
     }
 
+    public function feedAction()
+    {
+    }
+
 }
