@@ -38,7 +38,7 @@ class Blog extends Website_Model
      */
     public function __construct($options = null)
     {
-        if(null !== $options) {
+        if (null !== $options) {
             $this->setOptions($options);
         }
 
@@ -52,11 +52,11 @@ class Blog extends Website_Model
      */
     public function setOptions($options)
     {
-        if(is_array($options)) {
+        if (is_array($options)) {
             $options = new Zend_Config($options);
         }
 
-        if(!$options instanceof Zend_Config) {
+        if (!$options instanceof Zend_Config) {
             throw new Blog_Exception('Options must be array or Zend_Config instance');
         }
 
@@ -102,7 +102,7 @@ class Blog extends Website_Model
     {
         $tagField = new Tagfield_Tagfield();
         $tagRow = $tagField->getTagByUrl($tag);
-        if(!$tagRow) {
+        if (!$tagRow) {
             throw new Blog_Exception("Tag $tag doesn't exist");
         }
 
@@ -135,23 +135,23 @@ class Blog extends Website_Model
      */
     public function getListByDate($year, $month = null, $page = 1, $perPage = 10)
     {
-        $month = (int)$month;
+        $month = (int) $month;
 
-        if($month < 1 || $month > 12) {
+        if ($month < 1 || $month > 12) {
             $month = 0;
             $date = new Zend_Date("$year-01-01", Zend_Date::ISO_8601);
         } else {
-            if(1 == strlen($month)) {
+            if (1 == strlen($month)) {
                 $month = "0$month";
             }
             $date = new Zend_Date("$year-$month-01", Zend_Date::ISO_8601);
         }
 
-        $from = (int)$date->getTimestamp();
-        if($month) {
-            $to = (int)$date->setDay($date->get(Zend_Date::MONTH_DAYS))->getTimestamp();
+        $from = (int) $date->getTimestamp();
+        if ($month) {
+            $to = (int) $date->setDay($date->get(Zend_Date::MONTH_DAYS))->getTimestamp();
         } else {
-            $to = (int)$date->setMonth(12)->setDay(31)->getTimestamp();
+            $to = (int) $date->setMonth(12)->setDay(31)->getTimestamp();
         }
 
         $list = $this->_getList();
@@ -166,11 +166,11 @@ class Blog extends Website_Model
     public function getCategories()
     {
         $list = new Object_BlogCategory_List();
-        $limit = (int)@$this->_options->snippet->category->limit;
+        $limit = (int) @$this->_options->snippet->category->limit;
         $list->setLimit($limit ? $limit : 10);
 
         $ids = $return = array();
-        foreach($list as $cat) {
+        foreach ($list as $cat) {
             $ids[] = $cat->getId();
         }
 
@@ -184,14 +184,12 @@ class Blog extends Website_Model
             ->where('dest_id IN (?)', $ids)
             ->group('dest_id');
         $counts = array();
-        foreach($select->query()->fetchAll() as $row) {
-            $counts[$row['id']] = (int)$row['count'];
+        foreach ($select->query()->fetchAll() as $row) {
+            $counts[$row['id']] = (int) $row['count'];
         }
 
-        foreach($list as $cat) {
-            $count = (isset($counts[$cat->getId()]))
-                ? $counts[$cat->getId()]
-                : 0;
+        foreach ($list as $cat) {
+            $count = (isset($counts[$cat->getId()])) ? $counts[$cat->getId()] : 0;
             $cat->setEntryCount($count);
         }
 
@@ -213,24 +211,24 @@ class Blog extends Website_Model
         $date = clone $this->getList(1, 1)->getIterator()->current()->getDate();
         $endDate = $this->getList($count, 1)->getIterator()->current()->getDate();
 
-        while(1) {
+        while (1) {
             $year = $date->get(Zend_Date::YEAR);
 
             $list = $this->_getList();
             $list->setCondition('date BETWEEN ? AND ?', array(
-                (int)$date->setDay(1)->getTimestamp(),
-                (int)$date->setDay($date->get(Zend_Date::MONTH_DAYS))->getTimestamp(),
+                (int) $date->setDay(1)->getTimestamp(),
+                (int) $date->setDay($date->get(Zend_Date::MONTH_DAYS))->getTimestamp(),
             ));
             $count = $list->count();
 
-            if($count) {
-                if(!isset($calendar[$year])) {
+            if ($count) {
+                if (!isset($calendar[$year])) {
                     $calendar[$year] = array();
                 }
                 $calendar[$year][$date->get(Zend_Date::MONTH_SHORT)] = $count;
             }
 
-            if($date->isEarlier($endDate)) {
+            if ($date->isEarlier($endDate)) {
                 break;
             }
             $date->subMonth(1);
@@ -245,7 +243,7 @@ class Blog extends Website_Model
      */
     public function getFeed($format = 'rss')
     {
-        if($format != 'rss' && $format != 'atom') {
+        if ($format != 'rss' && $format != 'atom') {
             throw new Zend_Controller_Action_Exception("Feed type $format is not supported");
         }
 
@@ -255,29 +253,29 @@ class Blog extends Website_Model
         $feed = array(
             'title' => '',
             'copyright' => '',
-            'link'  => $host . 'plugin/Blog/entry/feed/format/' . $format,
+            'link' => $host . 'plugin/Blog/entry/feed/format/' . $format,
             'charset' => 'utf-8',
             'language' => 'pl-pl',
             'lastUpdate' => time(),
-            'published'  => time(),
+            'published' => time(),
             'entries' => array(),
         );
-        if($this->_options->feed) {
+        if ($this->_options->feed) {
             $feed = array_merge($feed, $this->_options->feed->toArray());
         }
 
-        foreach($this->getList() as $entry) {
+        foreach ($this->getList() as $entry) {
             $entry instanceof Object_BlogEntry;
             $feed['entries'][] = array(
                 'title' => $entry->getTitle(),
-                'link'  => $host . $url->url(array('key' => $entry->getKey()), 'blog-show'),
+                'link' => $host . $url->url(array('key' => $entry->getKey()), 'blog-show'),
                 'description' => (trim($entry->getSummary()))
                     ? $entry->getSummary()
                     : Website_Tool_Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200),
                 'lastUpdate' => $entry->getDate()->getTimestamp(),
             );
 
-            if($entry->getModificationDate() < $feed['lastUpdate']) {
+            if ($entry->getModificationDate() < $feed['lastUpdate']) {
                 $feed['lastUpdate'] = $feed['published'] = $entry->getModificationDate();
             }
         }
@@ -305,8 +303,8 @@ class Blog extends Website_Model
     protected function _paginate(Object_BlogEntry_List $list, $page, $perPage)
     {
         $paginator = new Zend_Paginator($list);
-        $paginator->setItemCountPerPage((int)$perPage);
-        $paginator->setCurrentPageNumber((int)$page);
+        $paginator->setItemCountPerPage((int) $perPage);
+        $paginator->setCurrentPageNumber((int) $page);
         $paginator->setPageRange(5);
         return $paginator;
     }

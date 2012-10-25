@@ -57,7 +57,7 @@ class Blog_EntryController extends Blog_Controller_Action
      */
     public function previewAction()
     {
-        $id = (int)$this->_getParam('o_id');
+        $id = (int) $this->_getParam('o_id');
         $entry = Object_Abstract::getById($id);
         /* @var $entry Blog_Entry */
 
@@ -81,13 +81,13 @@ class Blog_EntryController extends Blog_Controller_Action
         $key = $this->_getParam('key');
         $entry = $this->_blog->getEntry($key);
 
-        if(!$entry) {
+        if (!$entry) {
             throw new Zend_Controller_Action_Exception("Blog entry for key '$key' not found", 404);
         }
 
-        if($this->_commenting && $this->_request->isPost()) {
+        if ($this->_commenting && $this->_request->isPost()) {
             $result = $this->_commenting->saveComment($this->_request->getPost(), $entry);
-            if($result) {
+            if ($result) {
                 $this->_messenger->addMessage(
                     $this->initTranslation()->_("blog_comment_added")
                 );
@@ -131,7 +131,7 @@ class Blog_EntryController extends Blog_Controller_Action
 
         $cat = $this->_getParam('cat');
         $category = Object_BlogCategory::getByPath('/blog/categories/' . $cat);
-        if(!$category) {
+        if (!$category) {
             throw new Blog_Exception("Category $cat doesn't exist");
         }
 
