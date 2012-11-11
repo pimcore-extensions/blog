@@ -168,6 +168,10 @@ class Blog extends Website_Model
             $ids[] = $cat->getId();
         }
 
+        if (empty($ids)) {
+            return $list;
+        }
+
         // count entries in categories
         $entry = new Object_BlogEntry();
         $select = new Zend_Db_Select(Pimcore_Resource_Mysql::get()->getResource());
@@ -200,6 +204,10 @@ class Blog extends Website_Model
         $calendar = array();
 
         $count = $this->_getList()->count();
+
+        if (!$count) {
+            return $calendar;
+        }
 
         // date of first entry (decremented by months to $endDate)
         $date = clone $this->getList(1, 1)->getIterator()->current()->getDate();
