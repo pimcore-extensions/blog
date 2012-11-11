@@ -1,12 +1,12 @@
 # Blog plugin for [pimcore](http://www.pimcore.org/) #
 
-## Features (status) ##
+## Features ##
 
-*   Entries and categories build on pimcore [data objects](http://www.pimcore.org/wiki/display/PIMCORE/Data+Objects) **(ready)**
-*   RSS feed **(ready)**
-*   Snippets with categories / calendar / feed links / latest entries **(ready)**
-*   Comments provided by [Commenting](https://github.com/rafalgalka/pimcore-plugin-commenting) plugin integration **(ready)**
-*   Tags and tag cloud provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration **(ready)**
+*   Entries and categories build on pimcore [data objects](http://www.pimcore.org/wiki/display/PIMCORE/Data+Objects)
+*   RSS feed
+*   Snippets with categories / calendar / feed links / latest entries
+*   Comments provided by [Commenting](https://github.com/rafalgalka/pimcore-plugin-commenting) plugin integration
+*   Tags and tag cloud provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration
 
 ## Setup ##
 
@@ -28,6 +28,10 @@ Module: Blog
 Controller: entry
 Action: default
 ```
+
+** NOTE: If you need Tag Field plugin integration install it first.
+Otherwise installer will skip tag field in blog entry class definition.
+Of course you can add tag field manualy **
 
 ### Snippets ###
 
