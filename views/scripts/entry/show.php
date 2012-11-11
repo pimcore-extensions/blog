@@ -3,7 +3,7 @@
     <div class="row">
         <div class="span9">
 
-            <?=''//$this->messenger()?>
+            <?= $this->flashMessenger() ?>
 
             <h1><?= $this->input('page-header') ?></h1>
 
@@ -38,9 +38,9 @@
             </div>
             <?php endif; ?>
 
-            <div class="comments">
             <?php if (count($this->comments)): ?>
-                <h4>Komentarze:</h4>
+            <div class="comments">
+                <h4><?= $this->translate('Comments') ?>:</h4>
 
                 <?php foreach ($this->comments as $comment): ?>
                 <blockquote>
@@ -53,13 +53,15 @@
                 <?php endforeach; ?>
 
                 <?=$this->comments; // paginator ?>
+            </div>
             <?php endif; ?>
 
-            <?php if($this->commentForm): ?>
-                <h4>Dodaj komentarz:</h4>
+            <?php if ($this->commentForm): ?>
+            <div class="comments-form">
+                <h4><?= $this->translate('Add comment') ?>:</h4>
                 <?=$this->commentForm?>
-            <?php endif; ?>
             </div>
+            <?php endif; ?>
 
         </div>
         <div class="span3">

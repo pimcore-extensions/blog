@@ -13,10 +13,12 @@
         <pluginBuildTimestamp></pluginBuildTimestamp>
         <pluginClassName>Blog_Plugin</pluginClassName>
         <pluginIncludePaths>
+            <path>/Blog/lib</path>
             <path>/Blog/models</path>
             <path>/Blog/controllers</path>
         </pluginIncludePaths>
         <pluginNamespaces>
+            <namespace>Modern</namespace>
             <namespace>Blog</namespace>
         </pluginNamespaces>
         <pluginJsPaths>

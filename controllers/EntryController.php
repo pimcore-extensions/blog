@@ -44,10 +44,11 @@ class Blog_EntryController extends Blog_Controller_Action
     {
         parent::init();
 
-//        $options = Pimcore_Config::getWebsiteConfig(false)->blog;
-        $options = array();
-        $this->_blog = new Blog($options);
-//        $this->_commenting = new Commenting();
+        $this->_blog = new Blog();
+
+        if (class_exists('Commenting')) {
+            $this->_commenting = new Commenting();
+        }
     }
 
     /**
@@ -80,6 +81,8 @@ class Blog_EntryController extends Blog_Controller_Action
 
         $key = $this->_getParam('key');
         $entry = $this->_blog->getEntry($key);
+        // @todo pimcore Staticroute::assemble() generates double slash on end
+        $url = rtrim($this->view->url(), '/') . '/';
 
         if (!$entry) {
             throw new Zend_Controller_Action_Exception("Blog entry for key '$key' not found", 404);
@@ -89,9 +92,9 @@ class Blog_EntryController extends Blog_Controller_Action
             $result = $this->_commenting->saveComment($this->_request->getPost(), $entry);
             if ($result) {
                 $this->_messenger->addMessage(
-                    $this->initTranslation()->_("blog_comment_added")
+                    $this->_translate->_('blog_comment_added')
                 );
-                return $this->_redirect($entry->getFullPath());
+                return $this->_redirect($url);
             }
         }
         $this->view->entry = $entry;
@@ -100,7 +103,9 @@ class Blog_EntryController extends Blog_Controller_Action
             $this->view->comments = $this->_commenting->getComments(
                 $entry, $this->_getParam('page', 1), $this->_getParam('perpage', 10)
             );
-            $this->view->commentForm = $this->_commenting->getForm();
+            $form = $this->_commenting->getForm();
+            $form->setAction($url);
+            $this->view->commentForm = $form;
         }
 
         $this->view->headTitle($entry->getTitle());
