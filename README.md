@@ -1,15 +1,12 @@
 # Blog plugin for [pimcore](http://www.pimcore.org/) #
 
-It's functional but still under development. Try, comment, fork, improve or stay tuned! :)
-
 ## Features (status) ##
 
 *   Entries and categories build on pimcore [data objects](http://www.pimcore.org/wiki/display/PIMCORE/Data+Objects) **(ready)**
 *   RSS feed **(ready)**
 *   Snippets with categories / calendar / feed links / latest entries **(ready)**
 *   Comments provided by [Commenting](https://github.com/rafalgalka/pimcore-plugin-commenting) plugin integration **(ready)**
-*   Tags and tag cloud provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration **(soon)**
-*   Settings management
+*   Tags and tag cloud provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration **(ready)**
 
 ## Setup ##
 
@@ -47,3 +44,7 @@ You can add/modify/remove entry/category data fields using default pimcore Objec
 
 You can overwrite any of default view scripts by copying `Blog/views/scripts/:controller/:action.php` into `website/views/scripts/blog/:controller/:action.php`.
 Your custom view script will be used automatically instead of default one. This will allow you to update plugin without loosing your project markup.
+
+## Todo ##
+*   Settings management **(soon)**
+*   Tag cloud snippet

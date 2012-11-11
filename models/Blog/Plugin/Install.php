@@ -37,7 +37,11 @@ class Blog_Plugin_Install
 
     public function createClass($name)
     {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Blog/install/class_$name.xml");
+        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Blog/install/class_$name.xml", null, true);
+
+        if ($name == 'BlogEntry' && !class_exists('Tagfield_Plugin')) {
+            unset($conf->layoutDefinitions->childs->childs->{4});
+        }
 
         $class = Object_Class::create();
         $class->setName($name);

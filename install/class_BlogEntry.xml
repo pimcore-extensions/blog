@@ -61,6 +61,8 @@
                 <queryColumnType>bigint(20)</queryColumnType>
                 <columnType>bigint(20)</columnType>
                 <phpdocType>Pimcore_Date</phpdocType>
+                <defaultValue></defaultValue>
+                <useCurrentDate>1</useCurrentDate>
                 <name>date</name>
                 <title>Date</title>
                 <tooltip></tooltip>
@@ -120,14 +122,14 @@
                 <visibleGridView></visibleGridView>
                 <visibleSearch></visibleSearch>
             </childs>
-<!--            <childs>
+            <childs>
                 <fieldtype>Tagfield</fieldtype>
-                <tagskey></tagskey>
+                <tagskey>blog</tagskey>
                 <options></options>
                 <width>400</width>
                 <height></height>
-                <queryColumnType>varchar(255)</queryColumnType>
-                <columnType>varchar(255)</columnType>
+                <queryColumnType>text</queryColumnType>
+                <columnType>text</columnType>
                 <phpdocType>string</phpdocType>
                 <name>tags</name>
                 <title>Tags</title>
@@ -143,7 +145,7 @@
                 <invisible></invisible>
                 <visibleGridView></visibleGridView>
                 <visibleSearch></visibleSearch>
-            </childs>-->
+            </childs>
             <childs>
                 <fieldtype>objects</fieldtype>
                 <width>505</width>

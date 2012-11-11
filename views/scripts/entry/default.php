@@ -36,11 +36,7 @@
             <div class="tags">
 
             <?php foreach ($entry->getTags() as $tag): ?>
-            <a href="<?=$this->url(array(
-                'tag' => $tag['url'],
-                'page' => null, 'perpage' => null
-            ), 'blog-tag')?>"
-            ><?= $tag['tag'] ?></a>
+            <a href="<?=$this->url(array('tag' => $tag,), 'blog-tag')?>"><?= $tag ?></a>
             <?php endforeach; ?>
 
             </div>

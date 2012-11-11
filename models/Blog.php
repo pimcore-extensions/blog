@@ -100,14 +100,8 @@ class Blog extends Website_Model
      */
     public function getListByTag($tag, $page = 1, $perPage = 10)
     {
-        $tagField = new Tagfield_Tagfield();
-        $tagRow = $tagField->getTagByUrl($tag);
-        if (!$tagRow) {
-            throw new Blog_Exception("Tag $tag doesn't exist");
-        }
-
         $list = $this->_getList();
-        $list->setCondition("tags LIKE ?", array("%,{$tagRow->tag},%"));
+        $list->setCondition("tags LIKE ?", array("%,{$tag},%"));
 
         return $this->_paginate($list, $page, $perPage);
     }

@@ -42,6 +42,16 @@
             <priority>1</priority>
         </route>
         <route>
+            <name>blog-tag</name>
+            <pattern>|^/blog/tag/([-_\w]+)|</pattern>
+            <reverse>/blog/tag/%tag</reverse>
+            <module>Blog</module>
+            <controller>entry</controller>
+            <action>tag</action>
+            <variables>tag</variables>
+            <priority>1</priority>
+        </route>
+        <route>
             <name>blog-calendar</name>
             <pattern>|^/blog/calendar/([\d]*)/([\d]*)$|</pattern>
             <reverse>/blog/calendar/%year/{%month}</reverse>

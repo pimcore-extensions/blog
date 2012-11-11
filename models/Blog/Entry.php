@@ -36,13 +36,4 @@ class Blog_Entry extends Object_BlogEntry
         return str_replace('/blog/entries/', '', $this->getFullPath());
     }
 
-    /**
-     * @return array
-     * @todo implementation
-     */
-    public function getTags()
-    {
-        return array();
-    }
-
 }

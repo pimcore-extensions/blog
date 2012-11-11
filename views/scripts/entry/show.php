@@ -26,13 +26,13 @@
                 <?=$this->entry->getContent();?>
             </div>
 
-            <?php if(count($this->entry->getTags())): ?>
+            <?php if(method_exists($this->entry, 'getTags') && count($this->entry->getTags())): ?>
             <div class="tags">
                 <small>tagi:
                 <?php foreach($this->entry->getTags() as $tag): ?>
                     <a href="<?=$this->url(array(
-                        'tag' => $tag['url']
-                        ), 'blog-tag')?>"><?=$tag['tag']?></a>
+                        'tag' => $tag
+                        ), 'blog-tag')?>"><?=$tag?></a>
                 <?php endforeach; ?>
                 </small>
             </div>
