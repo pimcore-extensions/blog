@@ -6,14 +6,13 @@
 *   RSS feed
 *   Snippets with categories / calendar / feed links / latest entries
 *   Comments provided by [Commenting](https://github.com/rafalgalka/pimcore-plugin-commenting) plugin integration
-*   Tags and tag cloud provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration
+*   Tags provided by [Tags Field V2](http://www.pimcore.org/resources/extensions/detail/Tagfield) plugin integration
 
 ## Setup ##
 
 Just like other Pimcore plugins:
 
 *   navigate to `Extras -> Extensions -> Download Extensions`, find Blog plugin on list and choose "Download"
-    **(plugin will be available in Extension Hub after first stable release)**
 *   [OR] clone git repository into `/plugin/Blog` directory
 *   navigate to `Extras -> Extensions -> Manage Extensions` in admin panel
 *   enable & install plugin
@@ -29,9 +28,9 @@ Controller: entry
 Action: default
 ```
 
-** NOTE: If you need Tag Field plugin integration install it first.
+**NOTE: If you need Tag Field plugin integration install it first.
 Otherwise installer will skip tag field in blog entry class definition.
-Of course you can add tag field manualy **
+Of course you can add tag field manualy later.**
 
 ### Snippets ###
 
@@ -50,5 +49,5 @@ You can overwrite any of default view scripts by copying `Blog/views/scripts/:co
 Your custom view script will be used automatically instead of default one. This will allow you to update plugin without loosing your project markup.
 
 ## Todo ##
-*   Settings management **(soon)**
+*   Settings management
 *   Tag cloud snippet
