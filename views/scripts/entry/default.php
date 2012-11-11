@@ -32,15 +32,15 @@
                 </p>
             </div>
 
-            <?php if (count($entry->getTags())): ?>
+            <?php try { $tags = $entry->getTags(); ?>
+            <?php if (count($tags)): ?>
             <div class="tags">
-
-            <?php foreach ($entry->getTags() as $tag): ?>
-            <a href="<?=$this->url(array('tag' => $tag,), 'blog-tag')?>"><?= $tag ?></a>
-            <?php endforeach; ?>
-
+                <?php foreach ($tags as $tag): ?>
+                <a href="<?=$this->url(array('tag' => $tag,), 'blog-tag')?>"><?= $tag ?></a>
+                <?php endforeach; ?>
             </div>
             <?php endif; ?>
+            <?php } catch (Exception $e) {} ?>
 
             <?php endforeach; ?>
 

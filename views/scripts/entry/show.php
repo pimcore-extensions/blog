@@ -12,7 +12,7 @@
 
             <?php if(count($this->entry->getCategories())): ?>
             <div class="categories">
-                <small>kategorie:
+                <small><?= $this->translate('categories') ?>:
                 <?php foreach($this->entry->getCategories() as $category): ?>
                     <a href="<?=$this->url(array(
                         'cat' => $category->getKey()
@@ -26,10 +26,11 @@
                 <?=$this->entry->getContent();?>
             </div>
 
-            <?php if(method_exists($this->entry, 'getTags') && count($this->entry->getTags())): ?>
+            <?php try { $tags = $this->entry->getTags();?>
+            <?php if (count($tags)): ?>
             <div class="tags">
-                <small>tagi:
-                <?php foreach($this->entry->getTags() as $tag): ?>
+                <small><?= $this->translate('tags') ?>:
+                <?php foreach($tags as $tag): ?>
                     <a href="<?=$this->url(array(
                         'tag' => $tag
                         ), 'blog-tag')?>"><?=$tag?></a>
@@ -37,6 +38,7 @@
                 </small>
             </div>
             <?php endif; ?>
+            <?php } catch (Exception $e) {} ?>
 
             <?php if (count($this->comments)): ?>
             <div class="comments">
