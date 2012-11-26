@@ -26,7 +26,7 @@
  * @author      Rafał Gałka <rafal@modernweb.pl>
  * @copyright   Copyright (c) 2007-2012 ModernWeb (http://www.modernweb.pl)
  */
-class Blog extends Website_Model
+class Blog
 {
     /**
      * @var Zend_Config
@@ -41,8 +41,6 @@ class Blog extends Website_Model
         if (null !== $options) {
             $this->setOptions($options);
         }
-
-        $this->init();
     }
 
     /**
