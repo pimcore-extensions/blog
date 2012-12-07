@@ -21,9 +21,5 @@
             <namespace>Modern</namespace>
             <namespace>Blog</namespace>
         </pluginNamespaces>
-        <pluginJsPaths>
-        </pluginJsPaths>
-        <pluginCssPaths>
-        </pluginCssPaths>
     </plugin>
 </zend-config>
