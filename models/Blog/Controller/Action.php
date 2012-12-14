@@ -28,7 +28,7 @@
  * @author      Rafał Gałka <rafal@modernweb.pl>
  * @copyright   Copyright (c) 2007-2012 ModernWeb (http://www.modernweb.pl)
  */
-abstract class Blog_Controller_Action extends Pimcore_Controller_Action_Frontend
+abstract class Blog_Controller_Action extends Website_Controller_Action
 {
     /**
      * @var Zend_Controller_Request_Http
