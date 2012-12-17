@@ -45,7 +45,10 @@ class Blog_EntryController extends Blog_Controller_Action
         parent::init();
 
         $this->_blog = new Blog();
-
+        $cfg = $this->config;
+        if ($cfg->customCommenting && class_exists($cfg->customCommenting)) {
+            $this->_commenting = new $cfg->customCommenting();
+        } else
         if (class_exists('Commenting')) {
             $this->_commenting = new Commenting();
         }
@@ -217,4 +220,12 @@ class Blog_EntryController extends Blog_Controller_Action
         exit;
     }
 
+    /**
+     * Sets a custom commenting controller
+     *
+     * @param Commenting $commenting
+     */
+    public function setCustomCommenting(Commenting $commenting) {
+        $this->_commenting = $commenting;
+    }
 }
