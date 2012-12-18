@@ -69,7 +69,7 @@ class Blog_EntryController extends Blog_Controller_Action
             throw new Zend_Controller_Action_Exception("No entry with ID '$id'", 404);
         }
 
-        return $this->forward('show', null, null, array(
+        return $this->_forward('show', null, null, array(
             'key' => $entry->getUrlPath()
         ));
     }
@@ -97,7 +97,7 @@ class Blog_EntryController extends Blog_Controller_Action
                 $this->_messenger->addMessage(
                     $this->_translate->_('blog_comment_added')
                 );
-                return $this->redirect($url);
+                return $this->_redirect($url);
             }
         }
         $this->view->entry = $entry;
