@@ -225,7 +225,7 @@ class Blog_Plugin_Install
     protected function _getUser()
     {
         if (!$this->_user) {
-            $this->_user = Zend_Registry::get('pimcore_user');
+            $this->_user = Zend_Registry::get('pimcore_admin_user');
         }
 
         return $this->_user;
