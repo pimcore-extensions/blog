@@ -1,0 +1,4 @@
+"blog_installed_successfully","Das Blog Plugin wurde erfolgreich installiert. Bitte Pimcore neu laden!"
+"blog_install_failed","Das Blog Plugin konnte nicht installiert werden. Für weitere Details bitte ins log schauen."
+"blog_uninstalled_successfully","Das Blog Plugin wurde erfolgreich deinstalliert. Bitte Pimcore neu laden!"
+"blog_uninstall_failed","Das Blog Plugin konnte nicht deinstalliert werden. Für weitere Details bitte ins log schauen."
