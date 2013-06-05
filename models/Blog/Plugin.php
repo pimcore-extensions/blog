@@ -61,6 +61,52 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
 
             // create static routes
             $install->createStaticRoutes();
+            
+    		//blog document type
+			$docTypeBlog = Document_DocType::create();
+			$docTypeBlog->setModule('Blog');
+	        $docTypeBlog->setController('entry');
+	        $docTypeBlog->setAction('default');
+	        $docTypeBlog->setName('blog');
+	        $docTypeBlog->setType('page');
+	        $docTypeBlog->save();
+			
+			//latest blog entries snippet
+			$docTypeSnippetLatest = Document_DocType::create();
+			$docTypeSnippetLatest->setModule('Blog');
+	        $docTypeSnippetLatest->setController('snippet');
+	        $docTypeSnippetLatest->setAction('latest');
+	        $docTypeSnippetLatest->setName('lattest blog entries');
+	        $docTypeSnippetLatest->setType('snippet');
+	        $docTypeSnippetLatest->save();
+						
+			//blog categories snippet
+			$docTypeSnippetCategories = Document_DocType::create();
+			$docTypeSnippetCategories->setModule('Blog');
+	        $docTypeSnippetCategories->setController('snippet');
+	        $docTypeSnippetCategories->setAction('categories');
+	        $docTypeSnippetCategories->setName('blog categories');
+	        $docTypeSnippetCategories->setType('snippet');
+	        $docTypeSnippetCategories->save();
+			
+			//blog calendar snippet
+			$docTypeSnippetCalendar = Document_DocType::create();
+			$docTypeSnippetCalendar->setModule('Blog');
+	        $docTypeSnippetCalendar->setController('snippet');
+	        $docTypeSnippetCalendar->setAction('calendar');
+	        $docTypeSnippetCalendar->setName('blog calendar');
+	        $docTypeSnippetCalendar->setType('snippet');
+	        $docTypeSnippetCalendar->save();
+			
+			//blog feed snippet
+			$docTypeSnippetFeed = Document_DocType::create();
+			$docTypeSnippetFeed->setModule('Blog');
+	        $docTypeSnippetFeed->setController('snippet');
+	        $docTypeSnippetFeed->setAction('feed');
+	        $docTypeSnippetFeed->setName('blog feed');
+	        $docTypeSnippetFeed->setType('snippet');
+	        $docTypeSnippetFeed->save();    
+        
         } catch(Exception $e) {
             logger::crit($e);
             return self::getTranslate()->_('blog_install_failed');
