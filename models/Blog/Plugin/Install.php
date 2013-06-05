@@ -219,6 +219,41 @@ class Blog_Plugin_Install
         }
     }
 
+    public function createDocTypes()
+    {
+        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
+
+        foreach ($conf->doctypes->doctype as $def) {
+            $docType = Document_DocType::create();
+            $docType->setName($def->name);
+            $docType->setType($def->type);
+            $docType->setModule($def->module);
+            $docType->setController($def->controller);
+            $docType->setAction($def->action);
+            $docType->save();
+        }
+    }
+
+    public function removeDocTypes()
+    {
+        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
+
+        $names = array();
+        foreach ($conf->doctypes->doctype as $def) {
+            $names[] = $def->name;
+        }
+
+        $list = new Document_DocType_List();
+        $list->load();
+
+        foreach ($list->docTypes as $docType) {
+            /* @var $docType Document_DocType */
+            if (in_array($docType->name, $names)) {
+                $docType->delete();
+            }
+        }
+    }
+
     /**
      * @return User
      */

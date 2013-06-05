@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zend-config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
+    <doctypes>
+        <doctype>
+            <name>Blog main page</name>
+            <type>page</type>
+            <module>Blog</module>
+            <controller>entry</controller>
+            <action>default</action>
+        </doctype>
+        <doctype>
+            <name>Blog latest entries</name>
+            <type>snippet</type>
+            <module>Blog</module>
+            <controller>snippet</controller>
+            <action>latest</action>
+        </doctype>
+        <doctype>
+            <name>Blog categories</name>
+            <type>snippet</type>
+            <module>Blog</module>
+            <controller>snippet</controller>
+            <action>categories</action>
+        </doctype>
+        <doctype>
+            <name>Blog calendar</name>
+            <type>snippet</type>
+            <module>Blog</module>
+            <controller>snippet</controller>
+            <action>calendar</action>
+        </doctype>
+        <doctype>
+            <name>Blog feed</name>
+            <type>snippet</type>
+            <module>Blog</module>
+            <controller>snippet</controller>
+            <action>feed</action>
+        </doctype>
+    </doctypes>
+</zend-config>
