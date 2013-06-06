@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zend-config xmlns:zf="http://framework.zend.com/xml/zend-config-xml/1.0/">
+    <properties>
+        <property>
+            <key>blog-namespace</key>
+            <name>Blog namespace</name>
+            <description>Allows to create independent sections with blog entries/categories. Set object directory as a value.</description>
+            <type>object</type>
+            <value>/blog</value>
+            <ctype>document</ctype>
+            <inheritable>1</inheritable>
+        </property>
+    </properties>
+</zend-config>

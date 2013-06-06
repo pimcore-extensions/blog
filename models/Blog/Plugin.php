@@ -65,6 +65,9 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
             // create predefined document types
             $install->createDocTypes();
 
+            // create predefined properties
+            $install->createProperties();
+
         } catch(Exception $e) {
             logger::crit($e);
             return self::getTranslate()->_('blog_install_failed');
@@ -80,6 +83,9 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
     {
         try {
             $install = new Blog_Plugin_Install();
+
+            // remove predefined properties
+            $install->removeProperties();
 
             // remove predefined document types
             $install->removeDocTypes();

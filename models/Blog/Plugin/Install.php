@@ -254,6 +254,43 @@ class Blog_Plugin_Install
         }
     }
 
+    public function createProperties()
+    {
+        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/properties.xml');
+        $properties = $conf->properties->property->toArray();
+        if (!isset($properties[0])) {
+            $properties = array($properties);
+        }
+
+        foreach ($properties as $def) {
+            $property = Property_Predefined::create();
+            $property->setKey($def['key']);
+            $property->setName($def['name']);
+            $property->setDescription($def['description']);
+            $property->setType($def['type']);
+            $property->setData($def['value']);
+            $property->setCtype($def['ctype']);
+            $property->setInheritable($def['inheritable']);
+            $property->save();
+        }
+    }
+
+    public function removeProperties()
+    {
+        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/properties.xml');
+        $properties = $conf->properties->property->toArray();
+        if (!isset($properties['0'])) {
+            $properties = array($properties);
+        }
+
+        foreach ($properties as $def) {
+            $property = Property_Predefined::getByKey($def['key']);
+            if ($property) {
+                $property->delete();
+            }
+        }
+    }
+
     /**
      * @return User
      */
