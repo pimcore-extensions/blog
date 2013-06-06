@@ -1,7 +1,6 @@
-<?php if(count($this->list)): ?>
-
-    <div class="snippet categories well">
-        <h3><?= $this->input('snippet-header') ?></h3>
+<div class="snippet categories well">
+    <h3><?= $this->input('snippet-header') ?></h3>
+    <?php if(count($this->list)): ?>
         <ul>
         <?php foreach($this->list as $category): if($category->getEntryCount()): ?>
             <li>
@@ -12,6 +11,8 @@
             </li>
         <?php endif; endforeach; ?>
         </ul>
-    </div>
+    <?php else: ?>
+        <p><?= $this->translate('No categories defined') ?></p>
+    <?php endif; ?>
+</div>
 
-<?php endif; ?>
