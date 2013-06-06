@@ -13,13 +13,9 @@
 
             <?= $this->paginator ?>
 
-            <?php foreach ($this->paginator as $entry): ?>
-            <?php /* @var $entry Blog_Entry */ ?>
-
+            <?php foreach ($this->paginator as $entry): /* @var $entry Blog_Entry */ ?>
             <h2>
-                <a href="<?=$this->url(array(
-                    'key' => $entry->getUrlPath()
-                ), 'blog-show', false, false)?>"
+                <a href="<?=$entry->getUrl($this->document)?>"
                 ><?=$entry->getTitle()?></a>
             </h2>
             <small><?=$entry->getDate()->toString('FFFFF');?></small>
@@ -33,13 +29,13 @@
             </div>
 
             <?php try { $tags = $entry->getTags(); ?>
-            <?php if (count($tags)): ?>
-            <div class="tags">
-                <?php foreach ($tags as $tag): ?>
-                <a href="<?=$this->url(array('tag' => $tag,), 'blog-tag')?>"><?= $tag ?></a>
-                <?php endforeach; ?>
-            </div>
-            <?php endif; ?>
+                <?php if (count($tags)): ?>
+                <div class="tags">
+                    <?php foreach ($tags as $tag): ?>
+                    <a href="<?=$this->url(array('tag' => $tag,), 'blog-tag')?>"><?= $tag ?></a>
+                    <?php endforeach; ?>
+                </div>
+                <?php endif; ?>
             <?php } catch (Exception $e) {} ?>
 
             <?php endforeach; ?>

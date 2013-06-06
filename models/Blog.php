@@ -31,9 +31,15 @@ class Blog
     protected static $_namespace = '/blog';
 
     /**
-     * @var Zend_Config
+     *
+     * @var array
      */
-    protected $_options;
+    protected static $_options = array(
+        'entriesDirectory' => 'entries',
+        'categoriesDirectory' => 'categories',
+        'entryUrlKey' => 'entry',
+        'categoryUrlKey' => 'category',
+    );
 
     /**
      * @param array|Zend_Config $options
@@ -69,7 +75,7 @@ class Blog
      * @return \Blog
      * @throws Blog_Exception
      */
-    public function setOptions($options)
+    public static function setOptions($options)
     {
         if (is_array($options)) {
             $options = new Zend_Config($options);
@@ -83,17 +89,42 @@ class Blog
             self::setNamespace($options->namespace);
         }
 
-        $this->_options = $options;
+        foreach ($options as $key => $value) {
+            if (array_key_exists($key, self::$_options)) {
+                self::$_options[$key] = $value;
+            }
+        }
+
+        self::$_options = $options;
 
         return $this;
     }
 
     /**
+     * @param boolean $asArray
      * @return Zend_Config
      */
-    public function getOptions()
+    public static function getOptions($asArray = false)
     {
-        return $this->_options;
+        if ($asArray) {
+            return self::$_options;
+        }
+
+        return new Zend_Config(self::$_options);
+    }
+
+    /**
+     * @param string $name
+     * @return string
+     * @throws Blog_Exception
+     */
+    public static function getOption($name)
+    {
+        if (isset(self::$_options[$name])) {
+            return self::$_options[$name];
+        }
+
+        throw new Blog_Exception("Undefined option '$name'");
     }
 
     /**
@@ -101,7 +132,7 @@ class Blog
      */
     public function getEntriesPath()
     {
-        return sprintf('%s/entries/', $this->getNamespace());
+        return sprintf('%s/%s/', self::getNamespace(), self::getOption('entriesDirectory'));
     }
 
     /**
@@ -109,7 +140,7 @@ class Blog
      */
     public function getCategoriesPath()
     {
-        return sprintf('%s/categories/', $this->getNamespace());
+        return sprintf('%s/%s/', self::getNamespace(), self::getOption('categoriesDirectory'));
     }
 
     /**
@@ -210,7 +241,7 @@ class Blog
     {
         $list = new Object_BlogCategory_List();
         $list->setCondition("o_path like '{$this->getCategoriesPath()}%'");
-        $limit = (int) @$this->_options->snippet->category->limit;
+        $limit = (int) @self::$_options->snippet->category->limit;
         $list->setLimit($limit ? $limit : 10);
 
         $ids = $return = array();
@@ -319,8 +350,8 @@ class Blog
             'published' => time(),
             'entries' => array(),
         );
-        if ($this->_options->feed) {
-            $feed = array_merge($feed, $this->_options->feed->toArray());
+        if (self::$_options->feed) {
+            $feed = array_merge($feed, self::$_options->feed->toArray());
         }
 
         foreach ($this->getList() as $entry) {

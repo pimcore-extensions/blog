@@ -61,7 +61,7 @@ class Blog_EntryController extends Blog_Controller_Action
         }
 
         return $this->_forward('show', null, null, array(
-            'key' => $entry->getUrlPath()
+            'key' => $entry->getUrl()
         ));
     }
 

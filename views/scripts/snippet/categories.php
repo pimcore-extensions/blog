@@ -4,8 +4,9 @@
         <ul>
         <?php foreach($this->list as $category): if($category->getEntryCount()): ?>
             <li>
+                <?= $category->getUrl($this->document) ?>
                 <a
-                    href="<?=$this->url(array('cat' => $category->getKey()), 'blog-category')?>"
+                    href="<?= $category->getUrl($this->document) ?>"
                     class="<?= ($this->category == $category->getKey()) ? 'active' : '' ?>"
                 ><?=$category->getName()?> (<?=$category->getEntryCount()?>)</a>
             </li>

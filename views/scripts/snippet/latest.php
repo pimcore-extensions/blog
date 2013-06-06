@@ -10,9 +10,7 @@
         <?php /* @var $entry Blog_Entry */ ?>
             <blockquote>
                 <h4>
-                    <a href="<?=$this->url(array(
-                        'key' => $entry->getUrlPath()
-                    ), 'blog-show', false, false)?>"
+                    <a href="<?=$entry->getUrl($this->document)?>"
                     ><?=$entry->getTitle()?></a>
                 </h4>
                 <small><?=$entry->getDate()->toString('FFFFF');?></small>

@@ -28,4 +28,15 @@
  */
 class Blog_Category extends Object_BlogCategory
 {
+    /**
+     * @return string
+     * @todo maybe there is better solution for url generation? it must be primarily flexible
+     */
+    public function getUrl(Document $doc)
+    {
+        $regex = '|.*/' . Blog::getOption('categoriesDirectory') . '/|';
+        $path = preg_replace($regex, '', $this->getFullPath());
+        return sprintf('%s/%s/%s', $doc->getFullPath(), Blog::getOption('categoryUrlKey'), $path);
+    }
+
 }

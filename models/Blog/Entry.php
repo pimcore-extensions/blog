@@ -30,10 +30,13 @@ class Blog_Entry extends Object_BlogEntry
 {
     /**
      * @return string
+     * @todo maybe there is better solution for url generation? it must be primarily flexible
      */
-    public function getUrlPath()
+    public function getUrl(Document $doc)
     {
-        return str_replace('/blog/entries/', '', $this->getFullPath());
+        $regex = '|.*/' . Blog::getOption('entriesDirectory') . '/|';
+        $path = preg_replace($regex, '', $this->getFullPath());
+        return sprintf('%s/%s/%s', $doc->getFullPath(), Blog::getOption('entryUrlKey'), $path);
     }
 
 }
