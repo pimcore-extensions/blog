@@ -30,19 +30,6 @@
  */
 class Blog_SnippetController extends Blog_Controller_Action
 {
-    /**
-     * @var Blog
-     */
-    protected $_blog;
-
-    public function init()
-    {
-        parent::init();
-
-//        $options = Pimcore_Config::getWebsiteConfig(false)->blog;
-        $options = array();
-        $this->_blog = new Blog($options);
-    }
 
     public function latestAction()
     {

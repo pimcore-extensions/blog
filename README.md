@@ -53,6 +53,7 @@ Your custom view script will be used automatically instead of default one. This 
  * 2012-12-07   1.0.2   Removed empty js/css paths from plugin.xml
  * 2013-04-14   1.0.3   Fixed installation after changes in pimcore.
  * 2013-06-05   1.0.4   Added predefined document types.
+ * 2013-06-06   1.1.0   Added namespaces - allows to create many independent blog sections.
 
 ## Todo ##
 *   Settings management

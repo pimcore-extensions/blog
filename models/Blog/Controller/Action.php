@@ -28,7 +28,7 @@
  * @author      Rafał Gałka <rafal@modernweb.pl>
  * @copyright   Copyright (c) 2007-2012 ModernWeb (http://www.modernweb.pl)
  */
-abstract class Blog_Controller_Action extends Pimcore_Controller_Action_Frontend
+abstract class Blog_Controller_Action extends Website_Controller_Action
 {
     /**
      * @var Zend_Controller_Request_Http
@@ -50,6 +50,16 @@ abstract class Blog_Controller_Action extends Pimcore_Controller_Action_Frontend
      */
     protected $_messenger;
 
+    /**
+     * @var Blog
+     */
+    protected $_blog;
+
+    /**
+     * @var Commenting
+     */
+    protected $_commenting;
+
     public function init()
     {
         parent::init();
@@ -64,13 +74,27 @@ abstract class Blog_Controller_Action extends Pimcore_Controller_Action_Frontend
 
         $this->_translate = $this->initTranslation();
 
+        $this->_blog = new Blog();
+
+        // handle namespace
+        if ($this->document != null) {
+            $namespace = $this->document->getProperty('blog-namespace');
+            if ($namespace) {
+                $this->_blog->setNamespace($namespace);
+            }
+        }
+
+        if (class_exists('Commenting')) {
+            $this->_commenting = new Commenting();
+        }
+
         $this->view->setScriptPath(
             array_merge(
                 $this->view->getScriptPaths(),
                 array(
                     PIMCORE_WEBSITE_PATH . '/views/scripts/',
                     PIMCORE_WEBSITE_PATH . '/views/layouts/',
-                    PIMCORE_WEBSITE_PATH . '/views/scripts/blog/'
+                    PIMCORE_WEBSITE_PATH . "/views/scripts/{$this->_blog->getNamespace()}/"
                 )
             )
         );

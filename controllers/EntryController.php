@@ -31,27 +31,6 @@
 class Blog_EntryController extends Blog_Controller_Action
 {
     /**
-     * @var Blog
-     */
-    protected $_blog;
-
-    /**
-     * @var Commenting
-     */
-    protected $_commenting;
-
-    public function init()
-    {
-        parent::init();
-
-        $this->_blog = new Blog();
-
-        if (class_exists('Commenting')) {
-            $this->_commenting = new Commenting();
-        }
-    }
-
-    /**
      * Preview entry in pimcore admin.
      *
      * @throws Zend_Controller_Action_Exception
@@ -97,6 +76,7 @@ class Blog_EntryController extends Blog_Controller_Action
                 return $this->_redirect($url);
             }
         }
+        $this->view->blog = $this->_blog;
         $this->view->entry = $entry;
 
         if ($this->_commenting) {
@@ -123,6 +103,7 @@ class Blog_EntryController extends Blog_Controller_Action
             $this->_getParam('page', 1),
             $this->_getParam('perpage', 10)
         );
+        $this->view->blog = $this->_blog;
     }
 
     /**
@@ -135,9 +116,9 @@ class Blog_EntryController extends Blog_Controller_Action
         $this->enableLayout();
 
         $cat = $this->_getParam('cat');
-        $category = Object_BlogCategory::getByPath('/blog/categories/' . $cat);
+        $category = $this->_blog->getCategory($cat);
         if (!$category) {
-            throw new Blog_Exception("Category $cat doesn't exist");
+            throw new Zend_Controller_Action_Exception("Category $cat doesn't exist", 404);
         }
 
         try {
@@ -151,6 +132,7 @@ class Blog_EntryController extends Blog_Controller_Action
         }
 
         $this->view->category = $category;
+        $this->view->blog = $this->_blog;
 
         $this->render('default');
     }

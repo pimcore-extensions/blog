@@ -8,7 +8,7 @@
         <pluginNiceName>Blog</pluginNiceName>
         <pluginIcon>/plugins/Blog/static/img/.png</pluginIcon>
         <pluginServer>plugins.pimcore.org</pluginServer>
-        <pluginVersion>1.0.4</pluginVersion>
+        <pluginVersion>1.1.0</pluginVersion>
         <pluginRevision></pluginRevision>
         <pluginBuildTimestamp></pluginBuildTimestamp>
         <pluginClassName>Blog_Plugin</pluginClassName>

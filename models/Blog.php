@@ -28,6 +28,8 @@
  */
 class Blog
 {
+    protected $_namespace = 'blog';
+
     /**
      * @var Zend_Config
      */
@@ -41,6 +43,25 @@ class Blog
         if (null !== $options) {
             $this->setOptions($options);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getNamespace()
+    {
+        return $this->_namespace;
+    }
+
+    /**
+     * @param string $namespace
+     * @return \Blog
+     */
+    public function setNamespace($namespace)
+    {
+        $this->_namespace = $namespace;
+
+        return $this;
     }
 
     /**
@@ -58,6 +79,10 @@ class Blog
             throw new Blog_Exception('Options must be array or Zend_Config instance');
         }
 
+        if ($options->namespace) {
+            $this->setNamespace($options->namespace);
+        }
+
         $this->_options = $options;
 
         return $this;
@@ -72,12 +97,37 @@ class Blog
     }
 
     /**
+     * @return string
+     */
+    public function getEntriesPath()
+    {
+        return sprintf('/%s/entries/', $this->getNamespace());
+    }
+
+    /**
+     * @return string
+     */
+    public function getCategoriesPath()
+    {
+        return sprintf('/%s/categories/', $this->getNamespace());
+    }
+
+    /**
      * @param string $key
      * @return Blog_Entry
      */
     public function getEntry($key)
     {
-        return Object_Abstract::getByPath('/blog/entries/' . $key);
+        return Object_Abstract::getByPath($this->getEntriesPath() . $key);
+    }
+
+    /**
+     * @param string $key
+     * @return Object_BlogCategory
+     */
+    public function getCategory($key)
+    {
+        return Object_Abstract::getByPath($this->getCategoriesPath() . $key);
     }
 
     /**
@@ -113,7 +163,8 @@ class Blog
     public function getListByCategory(Object_BlogCategory $category, $page = 1, $perpage = 10)
     {
         $list = $this->_getList();
-        $list->setCondition("categories LIKE ?", array("%,{$category->getId()},%"));
+        $cond = $list->getCondition() . ' AND categories LIKE ?';
+        $list->setCondition($cond, array("%,{$category->getId()},%"));
 
         return $this->_paginate($list, $page, $perpage);
     }
@@ -158,6 +209,7 @@ class Blog
     public function getCategories()
     {
         $list = new Object_BlogCategory_List();
+        $list->setCondition("o_path like '{$this->getCategoriesPath()}%'");
         $limit = (int) @$this->_options->snippet->category->limit;
         $list->setLimit($limit ? $limit : 10);
 
@@ -298,6 +350,8 @@ class Blog
         $list = new Object_BlogEntry_List();
         $list->setOrderKey(array('date', 'o_id'));
         $list->setOrder(array('DESC', 'ASC'));
+        $list->setCondition("o_path like '{$this->getEntriesPath()}%'");
+
         return $list;
     }
 
