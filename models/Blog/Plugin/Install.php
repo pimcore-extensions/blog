@@ -97,14 +97,17 @@ class Blog_Plugin_Install
         try {
             $conf = new Zend_Config_Xml($classmapXml);
             $classmap = $conf->toArray();
-            unset($classmap['Object_BlogEntry']);
+        } catch(Exception $e) {
+            return;
+        }
 
-            $writer = new Zend_Config_Writer_Xml(array(
-                'config' => new Zend_Config($classmap),
-                'filename' => $classmapXml
-            ));
-            $writer->write();
-        } catch(Exception $e) {}
+        unset($classmap['Object_BlogEntry']);
+
+        $writer = new Zend_Config_Writer_Xml(array(
+            'config' => new Zend_Config($classmap),
+            'filename' => $classmapXml
+        ));
+        $writer->write();
     }
 
     public function createFolders()
