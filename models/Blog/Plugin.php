@@ -43,6 +43,18 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
         try {
             $install = new Blog_Plugin_Install();
 
+            // create predefined document types
+            $install->createDocTypes();
+
+            // create predefined properties
+            $install->createProperties();
+
+            // create documents & snippets
+            $install->createDocuments();
+
+            // create static routes
+            $install->createStaticRoutes();
+
             // create object classes
             $blogCategory = $install->createClass('BlogCategory');
             $blogEntry = $install->createClass('BlogEntry');
@@ -58,15 +70,6 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
                 $blogEntry->getId(),
                 $blogCategory->getId(),
             ));
-
-            // create static routes
-            $install->createStaticRoutes();
-
-            // create predefined document types
-            $install->createDocTypes();
-
-            // create predefined properties
-            $install->createProperties();
 
         } catch(Exception $e) {
             logger::crit($e);
@@ -84,15 +87,6 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
         try {
             $install = new Blog_Plugin_Install();
 
-            // remove predefined properties
-            $install->removeProperties();
-
-            // remove predefined document types
-            $install->removeDocTypes();
-
-            // remove static routes
-            $install->removeStaticRoutes();
-
             // remove custom view
             $install->removeCustomView();
 
@@ -105,6 +99,18 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
             // remove classes
             $install->removeClass('BlogEntry');
             $install->removeClass('BlogCategory');
+
+            // remove static routes
+            $install->removeStaticRoutes();
+
+            // remove documents
+            $install->removeDocuments();
+
+            // remove predefined properties
+            $install->removeProperties();
+
+            // remove predefined document types
+            $install->removeDocTypes();
 
             return self::getTranslate()->_('blog_uninstalled_successfully');
         } catch (Exception $e) {

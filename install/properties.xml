@@ -4,10 +4,19 @@
         <property>
             <key>blog-namespace</key>
             <name>Blog namespace</name>
-            <description>Allows to create independent sections with blog entries/categories. Set object directory as a value.</description>
+            <description>Allows to create independent site sections with blog entries/categories. Set object directory as a value.</description>
             <type>object</type>
             <value>/blog</value>
             <ctype>document</ctype>
+            <inheritable>1</inheritable>
+        </property>
+        <property>
+            <key>blog-root</key>
+            <name>Blog section root document</name>
+            <description>Required for url generation. Set your main blog document as a value.</description>
+            <type>document</type>
+            <value>/blog</value>
+            <ctype>object</ctype>
             <inheritable>1</inheritable>
         </property>
     </properties>

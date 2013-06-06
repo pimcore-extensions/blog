@@ -110,6 +110,49 @@ class Blog_Plugin_Install
         $writer->write();
     }
 
+    public function createDocuments()
+    {
+        $blog = Document_Page::getByPath('/blog');
+        if (!$blog) {
+            $root = Document_Page::getByPath('/');
+            $blog = Document_Page::create($root->getId(), array(
+                'creationDate' => time(),
+                'userOwner' => $this->_getUser()->getId(),
+                'userModification' => $this->_getUser()->getId(),
+                'key' => 'blog',
+                'published' => true,
+                'module' => 'Blog',
+                'controller' => 'entry',
+                'action' => 'default',
+            ));
+        }
+
+        // create document snippets for all defined doctypes
+        $list = new Document_DocType_List();
+        $list->load();
+        foreach ($list->docTypes as $docType) {
+            /* @var $docType Document_DocType */
+            $path = '/blog/' . $docType->getAction();
+            if ($docType->type == 'snippet' && !Document_Service::pathExists($path)) {
+                Document_Snippet::create($blog->getId(), array(
+                    'creationDate' => time(),
+                    'userOwner' => $this->_getUser()->getId(),
+                    'userModification' => $this->_getUser()->getId(),
+                    'published' => true,
+                    'key' => $docType->getAction(),
+                    'module' => $docType->getModule(),
+                    'controller' => $docType->getController(),
+                    'action' => $docType->getAction(),
+                ));
+            }
+        }
+    }
+
+    public function removeDocuments()
+    {
+        Document_Page::getByPath('/blog')->delete();
+    }
+
     public function createFolders()
     {
         $root = Object_Folder::create(array(
@@ -120,6 +163,17 @@ class Blog_Plugin_Install
             'o_key' => 'blog',
             'o_published' => true,
         ));
+
+        // set root document property
+        $property = new Property();
+        $property->setName('blog-root');
+        $property->setType('document');
+        $property->setData(Document_Page::getByPath('/blog'));
+        $property->setInheritable(true);
+
+        $root->setProperties(array($property->getName() => $property));
+        $root->save();
+
         Object_Folder::create(array(
             'o_parentId' => $root->getId(),
             'o_creationDate' => time(),
@@ -260,20 +314,16 @@ class Blog_Plugin_Install
     public function createProperties()
     {
         $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/properties.xml');
-        $properties = $conf->properties->property->toArray();
-        if (!isset($properties[0])) {
-            $properties = array($properties);
-        }
 
-        foreach ($properties as $def) {
+        foreach ($conf->properties->property as $def) {
             $property = Property_Predefined::create();
-            $property->setKey($def['key']);
-            $property->setName($def['name']);
-            $property->setDescription($def['description']);
-            $property->setType($def['type']);
-            $property->setData($def['value']);
-            $property->setCtype($def['ctype']);
-            $property->setInheritable($def['inheritable']);
+            $property->setKey($def->key);
+            $property->setName($def->name);
+            $property->setDescription($def->description);
+            $property->setType($def->type);
+            $property->setData($def->value);
+            $property->setCtype($def->ctype);
+            $property->setInheritable($def->inheritable);
             $property->save();
         }
     }
@@ -281,13 +331,9 @@ class Blog_Plugin_Install
     public function removeProperties()
     {
         $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/properties.xml');
-        $properties = $conf->properties->property->toArray();
-        if (!isset($properties['0'])) {
-            $properties = array($properties);
-        }
 
-        foreach ($properties as $def) {
-            $property = Property_Predefined::getByKey($def['key']);
+        foreach ($conf->properties->property as $def) {
+            $property = Property_Predefined::getByKey($def->key);
             if ($property) {
                 $property->delete();
             }
