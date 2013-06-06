@@ -82,6 +82,7 @@ class Blog_Plugin_Install
         }
 
         $classmap['Object_BlogEntry'] = 'Blog_Entry';
+        $classmap['Object_BlogCategory'] = 'Blog_Category';
 
         $writer = new Zend_Config_Writer_Xml(array(
             'config' => new Zend_Config($classmap),
@@ -102,6 +103,7 @@ class Blog_Plugin_Install
         }
 
         unset($classmap['Object_BlogEntry']);
+        unset($classmap['Object_BlogCategory']);
 
         $writer = new Zend_Config_Writer_Xml(array(
             'config' => new Zend_Config($classmap),

@@ -94,7 +94,7 @@ abstract class Blog_Controller_Action extends Website_Controller_Action
                 array(
                     PIMCORE_WEBSITE_PATH . '/views/scripts/',
                     PIMCORE_WEBSITE_PATH . '/views/layouts/',
-                    PIMCORE_WEBSITE_PATH . "/views/scripts/{$this->_blog->getNamespace()}/"
+                    PIMCORE_WEBSITE_PATH . '/views/scripts/' . Blog::getNamespace() . '/',
                 )
             )
         );

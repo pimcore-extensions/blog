@@ -31,6 +31,21 @@
 class Blog_EntryController extends Blog_Controller_Action
 {
     /**
+     * Entry list.
+     *
+     */
+    public function defaultAction()
+    {
+        $this->enableLayout();
+
+        $this->view->paginator = $this->_blog->getList(
+            $this->_getParam('page', 1),
+            $this->_getParam('perpage', 10)
+        );
+        $this->view->blog = $this->_blog;
+    }
+
+    /**
      * Preview entry in pimcore admin.
      *
      * @throws Zend_Controller_Action_Exception
@@ -89,21 +104,6 @@ class Blog_EntryController extends Blog_Controller_Action
         }
 
         $this->view->headTitle($entry->getTitle());
-    }
-
-    /**
-     * Entry list.
-     *
-     */
-    public function defaultAction()
-    {
-        $this->enableLayout();
-
-        $this->view->paginator = $this->_blog->getList(
-            $this->_getParam('page', 1),
-            $this->_getParam('perpage', 10)
-        );
-        $this->view->blog = $this->_blog;
     }
 
     /**

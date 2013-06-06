@@ -28,7 +28,7 @@
  */
 class Blog
 {
-    protected $_namespace = 'blog';
+    protected static $_namespace = '/blog';
 
     /**
      * @var Zend_Config
@@ -48,18 +48,18 @@ class Blog
     /**
      * @return string
      */
-    public function getNamespace()
+    public static function getNamespace()
     {
-        return $this->_namespace;
+        return self::$_namespace;
     }
 
     /**
      * @param string $namespace
      * @return \Blog
      */
-    public function setNamespace($namespace)
+    public static function setNamespace($namespace)
     {
-        $this->_namespace = $namespace;
+        self::$_namespace = $namespace;
 
         return $this;
     }
@@ -80,7 +80,7 @@ class Blog
         }
 
         if ($options->namespace) {
-            $this->setNamespace($options->namespace);
+            self::setNamespace($options->namespace);
         }
 
         $this->_options = $options;
@@ -149,7 +149,7 @@ class Blog
     public function getListByTag($tag, $page = 1, $perPage = 10)
     {
         $list = $this->_getList();
-        $list->setCondition("tags LIKE ?", array("%,{$tag},%"));
+        $list->setCondition('tags LIKE ?', array("%,{$tag},%"));
 
         return $this->_paginate($list, $page, $perPage);
     }
