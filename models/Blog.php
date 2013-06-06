@@ -101,7 +101,7 @@ class Blog
      */
     public function getEntriesPath()
     {
-        return sprintf('/%s/entries/', $this->getNamespace());
+        return sprintf('%s/entries/', $this->getNamespace());
     }
 
     /**
@@ -109,7 +109,7 @@ class Blog
      */
     public function getCategoriesPath()
     {
-        return sprintf('/%s/categories/', $this->getNamespace());
+        return sprintf('%s/categories/', $this->getNamespace());
     }
 
     /**
