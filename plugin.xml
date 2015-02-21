@@ -7,19 +7,14 @@
         </pluginDescription>
         <pluginNiceName>Blog</pluginNiceName>
         <pluginIcon>/plugins/Blog/static/img/.png</pluginIcon>
-        <pluginServer>plugins.pimcore.org</pluginServer>
-        <pluginVersion>1.0.4</pluginVersion>
-        <pluginRevision></pluginRevision>
-        <pluginBuildTimestamp></pluginBuildTimestamp>
+        <pluginVersion>1.0.5</pluginVersion>
         <pluginClassName>Blog_Plugin</pluginClassName>
         <pluginIncludePaths>
             <path>/Blog/lib</path>
-            <path>/Blog/models</path>
             <path>/Blog/controllers</path>
         </pluginIncludePaths>
         <pluginNamespaces>
             <namespace>Modern</namespace>
-            <namespace>Blog</namespace>
         </pluginNamespaces>
     </plugin>
 </zend-config>
