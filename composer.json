@@ -1,10 +1,10 @@
 {
-    "name": "pimcore-extensions/plugin-blog",
+    "name": "pimcore-extensions/blog",
     "type": "pimcore-plugin",
     "license": "Simple BSD",
     "description": "Blog plugin for Pimcore",
     "keywords": ["pimcore", "blog"],
-    "homepage": "https://github.com/pimcore-extensions/plugin-blog",
+    "homepage": "https://github.com/pimcore-extensions/blog",
     "authors": [
         {
             "name": "Rafal Galka",
