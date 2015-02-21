@@ -17,6 +17,6 @@
         "pimcore/installer-plugin": ">=1"
     },
     "autoload": {
-        "psr-0": {"Blog_": "models/"}
+        "psr-0": {"Blog": "models/"}
     }
 }
