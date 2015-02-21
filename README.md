@@ -49,10 +49,11 @@ You can overwrite any of default view scripts by copying `Blog/views/scripts/:co
 Your custom view script will be used automatically instead of default one. This will allow you to update plugin without loosing your project markup.
 
 ## Changelog ##
- * 2012-11-26   1.0.1   Added example blog layout. Fixed template overwriting.
- * 2012-12-07   1.0.2   Removed empty js/css paths from plugin.xml
- * 2013-04-14   1.0.3   Fixed installation after changes in pimcore.
+ * 2015-02-21   1.0.5   composer.json - published on [Packagist](https://packagist.org/packages/pimcore-extensions/blog)
  * 2013-06-05   1.0.4   Added predefined document types.
+ * 2013-04-14   1.0.3   Fixed installation after changes in pimcore.
+ * 2012-12-07   1.0.2   Removed empty js/css paths from plugin.xml
+ * 2012-11-26   1.0.1   Added example blog layout. Fixed template overwriting.
 
 ## Todo ##
 *   Settings management
