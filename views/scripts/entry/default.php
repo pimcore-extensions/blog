@@ -1,4 +1,5 @@
 <?php $this->layout()->setLayout('layout') ?>
+
 <div class="container blog blog-list">
     <div class="row">
         <div class="span9">
