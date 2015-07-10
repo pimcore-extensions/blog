@@ -272,18 +272,28 @@ class Blog
         }
 
         foreach ($this->getList() as $entry) {
-            $entry instanceof Object_BlogEntry;
-            $feed['entries'][] = array(
-                'title' => $entry->getTitle(),
-                'link' => $host . $url->url(array('key' => $entry->getKey()), 'blog-show'),
-                'description' => (trim($entry->getSummary()))
-                    ? $entry->getSummary()
-                    : Website_Tool_Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200),
-                'lastUpdate' => $entry->getDate()->getTimestamp(),
-            );
+            if ($entry instanceof Object_BlogEntry) {
+                $description = '';
+                if (trim($entry->getSummary())) {
+                    $description = $entry->getSummary();
+                } else {
+                    if (class_exists('Website_Tool_Text')) {
+                        $description = Website_Tool_Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200);
+                    } elseif (class_exists('\\Website\\Tool\\Text')) {
+                        $description = \Website\Tool\Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200);
+                    }
+                }
 
-            if ($entry->getModificationDate() < $feed['lastUpdate']) {
-                $feed['lastUpdate'] = $feed['published'] = $entry->getModificationDate();
+                $feed['entries'][] = array(
+                    'title' => $entry->getTitle(),
+                    'link' => $host . $url->url(array('key' => $entry->getKey()), 'blog-show'),
+                    'description' => $description,
+                    'lastUpdate' => $entry->getDate()->getTimestamp(),
+                );
+
+                if ($entry->getModificationDate() < $feed['lastUpdate']) {
+                    $feed['lastUpdate'] = $feed['published'] = $entry->getModificationDate();
+                }
             }
         }
 
