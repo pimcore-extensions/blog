@@ -99,7 +99,7 @@ class Blog
     public function getListByTag($tag, $page = 1, $perPage = 10)
     {
         $list = $this->_getList();
-        $list->setCondition("tags LIKE ?", array("%,{$tag},%"));
+        $list->addConditionParam("tags LIKE ?", array("%,{$tag},%"));
 
         return $this->_paginate($list, $page, $perPage);
     }
@@ -113,7 +113,7 @@ class Blog
     public function getListByCategory(Object_BlogCategory $category, $page = 1, $perpage = 10)
     {
         $list = $this->_getList();
-        $list->setCondition("categories LIKE ?", array("%,{$category->getId()},%"));
+        $list->addConditionParam("categories LIKE ?", array("%,{$category->getId()},%"));
 
         return $this->_paginate($list, $page, $perpage);
     }
@@ -147,7 +147,7 @@ class Blog
         }
 
         $list = $this->_getList();
-        $list->setCondition('date BETWEEN ? AND ?', array($from, $to));
+        $list->addConditionParam('date BETWEEN ? AND ?', array($from, $to));
 
         return $this->_paginate($list, $page, $perPage);
     }
@@ -215,7 +215,7 @@ class Blog
             $year = $date->get(Zend_Date::YEAR);
 
             $list = $this->_getList();
-            $list->setCondition('date BETWEEN ? AND ?', array(
+            $list->addConditionParam('date BETWEEN ? AND ?', array(
                 (int) $date->setDay(1)->getTimestamp(),
                 (int) $date->setDay($date->get(Zend_Date::MONTH_DAYS))->getTimestamp(),
             ));
