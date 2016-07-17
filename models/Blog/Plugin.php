@@ -20,6 +20,8 @@
  * @license     http://www.modernweb.pl/license/new-bsd     New BSD License
  */
 
+namespace Blog;
+
 /**
  * Core plugin class.
  *
@@ -28,10 +30,10 @@
  * @author      Rafał Gałka <rafal@modernweb.pl>
  * @copyright   Copyright (c) 2007-2012 ModernWeb (http://www.modernweb.pl)
  */
-class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plugin_Interface
+class Plugin extends \Pimcore_API_Plugin_Abstract implements \Pimcore_API_Plugin_Interface
 {
     /**
-     * @var Zend_Translate
+     * @var \Zend_Translate
      */
     protected static $_translate;
 
@@ -41,7 +43,7 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
     public static function install()
     {
         try {
-            $install = new Blog_Plugin_Install();
+            $install = new Plugin\Install();
 
             // create object classes
             $blogCategory = $install->createClass('BlogCategory');
@@ -65,8 +67,8 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
             // create predefined document types
             $install->createDocTypes();
 
-        } catch(Exception $e) {
-            logger::crit($e);
+        } catch (Exception $e) {
+            \Logger::crit($e);
             return self::getTranslate()->_('blog_install_failed');
         }
 
@@ -79,7 +81,7 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
     public static function uninstall()
     {
         try {
-            $install = new Blog_Plugin_Install();
+            $install = new Plugin\Install();
 
             // remove predefined document types
             $install->removeDocTypes();
@@ -102,7 +104,7 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
 
             return self::getTranslate()->_('blog_uninstalled_successfully');
         } catch (Exception $e) {
-            Logger::crit($e);
+            \Logger::crit($e);
             return self::getTranslate()->_('blog_uninstall_failed');
         }
     }
@@ -112,8 +114,8 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
      */
     public static function isInstalled()
     {
-        $entry = Object_Class::getByName('BlogEntry');
-        $category = Object_Class::getByName('BlogCategory');
+        $entry = \Object_Class::getByName('BlogEntry');
+        $category = \Object_Class::getByName('BlogCategory');
 
         if ($entry && $category) {
             return true;
@@ -144,21 +146,21 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
     }
 
     /**
-     * @return Zend_Translate
+     * @return \Zend_Translate
      */
     public static function getTranslate()
     {
-        if(self::$_translate instanceof Zend_Translate) {
+        if (self::$_translate instanceof \Zend_Translate) {
             return self::$_translate;
         }
 
         try {
-            $lang = Zend_Registry::get('Zend_Locale')->getLanguage();
+            $lang = \Zend_Registry::get('Zend_Locale')->getLanguage();
         } catch (Exception $e) {
             $lang = 'en';
         }
 
-        self::$_translate = new Zend_Translate(
+        self::$_translate = new \Zend_Translate(
             'csv',
             PIMCORE_PLUGINS_PATH . self::getTranslationFile($lang),
             $lang,
@@ -166,5 +168,4 @@ class Blog_Plugin extends Pimcore_API_Plugin_Abstract implements Pimcore_API_Plu
         );
         return self::$_translate;
     }
-
 }

@@ -20,13 +20,15 @@
  * @license     http://www.modernweb.pl/license/new-bsd     New BSD License
  */
 
+namespace Blog;
+
 /**
  * @category    Pimcore
  * @package     Plugin_Blog
  * @author      Rafał Gałka <rafal@modernweb.pl>
  * @copyright   Copyright (c) 2007-2012 ModernWeb (http://www.modernweb.pl)
  */
-class Blog_Entry extends Object_BlogEntry
+class Entry extends \Object_BlogEntry
 {
     /**
      * @return string

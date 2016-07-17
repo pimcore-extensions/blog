@@ -1,22 +1,27 @@
 {
-    "name": "pimcore-extensions/blog",
-    "type": "pimcore-plugin",
-    "license": "Simple BSD",
-    "description": "Blog plugin for Pimcore",
-    "keywords": ["pimcore", "blog"],
-    "homepage": "https://github.com/pimcore-extensions/blog",
-    "authors": [
-        {
-            "name": "Rafal Galka",
-            "email": "rafal.galka@modernweb.pl",
-            "homepage": "http://www.modernweb.pl/",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "pimcore/installer-plugin": ">=1"
-    },
-    "autoload": {
-        "psr-0": {"Blog": "models/"}
+  "name": "pimcore-extensions/blog",
+  "type": "pimcore-plugin",
+  "license": "Simple BSD",
+  "description": "Blog plugin for pimcore",
+  "keywords": [
+    "pimcore",
+    "blog"
+  ],
+  "homepage": "https://github.com/pimcore-extensions/blog",
+  "authors": [
+    {
+      "name": "Rafal Galka",
+      "email": "rafal.galka@modernweb.pl",
+      "homepage": "http://www.modernweb.pl/",
+      "role": "Developer"
     }
+  ],
+  "require": {
+    "pimcore/installer-plugin": ">=1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Blog\\": "models/Blog"
+    }
+  }
 }

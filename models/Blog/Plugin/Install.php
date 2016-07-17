@@ -20,6 +20,8 @@
  * @license     http://www.modernweb.pl/license/new-bsd     New BSD License
  */
 
+namespace Blog\Plugin;
+
 /**
  * Blog plugin installation class.
  *
@@ -28,26 +30,26 @@
  * @author      Rafał Gałka <rafal@modernweb.pl>
  * @copyright   Copyright (c) 2007-2012 ModernWeb (http://www.modernweb.pl)
  */
-class Blog_Plugin_Install
+class Install
 {
     /**
-     * @var User
+     * @var \User
      */
     protected $_user;
 
     public function createClass($name)
     {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Blog/install/class_$name.xml", null, true);
+        $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . "/Blog/install/class_$name.xml", null, true);
 
         if ($name == 'BlogEntry' && !class_exists('Tagfield_Plugin')) {
             unset($conf->layoutDefinitions->childs->childs->{4});
         }
 
-        $class = Object_Class::create();
+        $class = \Object_Class::create();
         $class->setName($name);
         $class->setUserOwner($this->_getUser()->getId());
         $class->setLayoutDefinitions(
-            Object_Class_Service::generateLayoutTreeFromArray(
+            \Object_Class_Service::generateLayoutTreeFromArray(
                 $conf->layoutDefinitions->toArray()
             )
         );
@@ -64,7 +66,7 @@ class Blog_Plugin_Install
 
     public function removeClass($name)
     {
-        $class = Object_Class::getByName($name);
+        $class = \Object_Class::getByName($name);
         if ($class) {
             $class->delete();
         }
@@ -75,16 +77,16 @@ class Blog_Plugin_Install
         $classmapXml = PIMCORE_CONFIGURATION_DIRECTORY . '/classmap.xml';
 
         try {
-            $conf = new Zend_Config_Xml($classmapXml);
+            $conf = new \Zend_Config_Xml($classmapXml);
             $classmap = $conf->toArray();
-        } catch(Exception $e) {
+        } catch (\Exception $e) {
             $classmap = array();
         }
 
         $classmap['Object_BlogEntry'] = 'Blog_Entry';
 
-        $writer = new Zend_Config_Writer_Xml(array(
-            'config' => new Zend_Config($classmap),
+        $writer = new \Zend_Config_Writer_Xml(array(
+            'config' => new \Zend_Config($classmap),
             'filename' => $classmapXml
         ));
         $writer->write();
@@ -95,21 +97,22 @@ class Blog_Plugin_Install
         $classmapXml = PIMCORE_CONFIGURATION_DIRECTORY . '/classmap.xml';
 
         try {
-            $conf = new Zend_Config_Xml($classmapXml);
+            $conf = new \Zend_Config_Xml($classmapXml);
             $classmap = $conf->toArray();
             unset($classmap['Object_BlogEntry']);
 
-            $writer = new Zend_Config_Writer_Xml(array(
-                'config' => new Zend_Config($classmap),
+            $writer = new \Zend_Config_Writer_Xml(array(
+                'config' => new \Zend_Config($classmap),
                 'filename' => $classmapXml
             ));
             $writer->write();
-        } catch(Exception $e) {}
+        } catch (\Exception $e) {
+        }
     }
 
     public function createFolders()
     {
-        $root = Object_Folder::create(array(
+        $root = \Object_Folder::create(array(
             'o_parentId' => 1,
             'o_creationDate' => time(),
             'o_userOwner' => $this->_getUser()->getId(),
@@ -117,7 +120,7 @@ class Blog_Plugin_Install
             'o_key' => 'blog',
             'o_published' => true,
         ));
-        Object_Folder::create(array(
+        \Object_Folder::create(array(
             'o_parentId' => $root->getId(),
             'o_creationDate' => time(),
             'o_userOwner' => $this->_getUser()->getId(),
@@ -125,7 +128,7 @@ class Blog_Plugin_Install
             'o_key' => 'entries',
             'o_published' => true,
         ));
-        Object_Folder::create(array(
+        \Object_Folder::create(array(
             'o_parentId' => $root->getId(),
             'o_creationDate' => time(),
             'o_userOwner' => $this->_getUser()->getId(),
@@ -139,7 +142,7 @@ class Blog_Plugin_Install
 
     public function removeFolders()
     {
-        $blogFolder = Object_Folder::getByPath('/blog');
+        $blogFolder = \Object_Folder::getByPath('/blog');
         if ($blogFolder) {
             $blogFolder->delete();
         }
@@ -147,7 +150,7 @@ class Blog_Plugin_Install
 
     public function createCustomView($rootFolder, array $classIds)
     {
-        $customViews = Pimcore_Tool::getCustomViewConfig();
+        $customViews = \Pimcore_Tool::getCustomViewConfig();
         if (!$customViews) {
             $customViews = array();
             $customViewId = 1;
@@ -164,8 +167,8 @@ class Blog_Plugin_Install
             'showroot' => false,
             'classes' => implode(',', $classIds),
         );
-        $writer = new Zend_Config_Writer_Xml(array(
-            'config' => new Zend_Config(array('views'=> array('view' => $customViews))),
+        $writer = new \Zend_Config_Writer_Xml(array(
+            'config' => new \Zend_Config(array('views' => array('view' => $customViews))),
             'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/customviews.xml'
         ));
         $writer->write();
@@ -173,7 +176,7 @@ class Blog_Plugin_Install
 
     public function removeCustomView()
     {
-        $customViews = Pimcore_Tool::getCustomViewConfig();
+        $customViews = \Pimcore_Tool::getCustomViewConfig();
         if ($customViews) {
             foreach ($customViews as $key => $view) {
                 if ($view['name'] == 'Blog') {
@@ -181,8 +184,8 @@ class Blog_Plugin_Install
                     break;
                 }
             }
-            $writer = new Zend_Config_Writer_Xml(array(
-                'config' => new Zend_Config(array('views'=> array('view' => $customViews))),
+            $writer = new \Zend_Config_Writer_Xml(array(
+                'config' => new \Zend_Config(array('views' => array('view' => $customViews))),
                 'filename' => PIMCORE_CONFIGURATION_DIRECTORY . '/customviews.xml'
             ));
             $writer->write();
@@ -191,10 +194,10 @@ class Blog_Plugin_Install
 
     public function createStaticRoutes()
     {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
+        $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
 
         foreach ($conf->routes->route as $def) {
-            $route = Staticroute::create();
+            $route = \Staticroute::create();
             $route->setName($def->name);
             $route->setPattern($def->pattern);
             $route->setReverse($def->reverse);
@@ -209,10 +212,10 @@ class Blog_Plugin_Install
 
     public function removeStaticRoutes()
     {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
+        $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/staticroutes.xml');
 
         foreach ($conf->routes->route as $def) {
-            $route = Staticroute::getByName($def->name);
+            $route = \Staticroute::getByName($def->name);
             if ($route) {
                 $route->delete();
             }
@@ -221,10 +224,10 @@ class Blog_Plugin_Install
 
     public function createDocTypes()
     {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
+        $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
 
         foreach ($conf->doctypes->doctype as $def) {
-            $docType = Document_DocType::create();
+            $docType = \Document_DocType::create();
             $docType->setName($def->name);
             $docType->setType($def->type);
             $docType->setModule($def->module);
@@ -236,18 +239,18 @@ class Blog_Plugin_Install
 
     public function removeDocTypes()
     {
-        $conf = new Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
+        $conf = new \Zend_Config_Xml(PIMCORE_PLUGINS_PATH . '/Blog/install/doctypes.xml');
 
         $names = array();
         foreach ($conf->doctypes->doctype as $def) {
             $names[] = $def->name;
         }
 
-        $list = new Document_DocType_List();
+        $list = new \Document_DocType_List();
         $list->load();
 
         foreach ($list->docTypes as $docType) {
-            /* @var $docType Document_DocType */
+            /* @var $docType \Document_DocType */
             if (in_array($docType->name, $names)) {
                 $docType->delete();
             }
@@ -255,15 +258,14 @@ class Blog_Plugin_Install
     }
 
     /**
-     * @return User
+     * @return \User
      */
     protected function _getUser()
     {
         if (!$this->_user) {
-            $this->_user = Zend_Registry::get('pimcore_admin_user');
+            $this->_user = \Zend_Registry::get('pimcore_admin_user');
         }
 
         return $this->_user;
     }
-
 }

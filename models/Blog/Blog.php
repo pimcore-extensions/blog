@@ -20,6 +20,8 @@
  * @license     http://www.modernweb.pl/license/new-bsd     New BSD License
  */
 
+namespace Blog;
+
 /**
  * @category    Pimcore
  * @package     Plugin_Blog
@@ -29,12 +31,12 @@
 class Blog
 {
     /**
-     * @var Zend_Config
+     * @var \Zend_Config
      */
     protected $_options;
 
     /**
-     * @param array|Zend_Config $options
+     * @param array|\Zend_Config $options
      */
     public function __construct($options = null)
     {
@@ -44,18 +46,18 @@ class Blog
     }
 
     /**
-     * @param array|Zend_Config $options
-     * @return \Blog
-     * @throws Blog_Exception
+     * @param array|\Zend_Config $options
+     * @return Blog
+     * @throws Exception
      */
     public function setOptions($options)
     {
         if (is_array($options)) {
-            $options = new Zend_Config($options);
+            $options = new \Zend_Config($options);
         }
 
-        if (!$options instanceof Zend_Config) {
-            throw new Blog_Exception('Options must be array or Zend_Config instance');
+        if (!$options instanceof \Zend_Config) {
+            throw new Exception('Options must be array or Zend_Config instance');
         }
 
         $this->_options = $options;
@@ -64,7 +66,7 @@ class Blog
     }
 
     /**
-     * @return Zend_Config
+     * @return \Zend_Config
      */
     public function getOptions()
     {
@@ -73,17 +75,17 @@ class Blog
 
     /**
      * @param string $key
-     * @return Blog_Entry
+     * @return Entry
      */
     public function getEntry($key)
     {
-        return Object_Abstract::getByPath('/blog/entries/' . $key);
+        return \Object_Abstract::getByPath('/blog/entries/' . $key);
     }
 
     /**
      * @param integer $page
      * @param integer $perPage
-     * @return Zend_Paginator
+     * @return \Zend_Paginator
      */
     public function getList($page = 1, $perPage = 10)
     {
@@ -94,7 +96,7 @@ class Blog
      * @param string $tag
      * @param integer $page
      * @param integer $perPage
-     * @return Zend_Paginator
+     * @return \Zend_Paginator
      */
     public function getListByTag($tag, $page = 1, $perPage = 10)
     {
@@ -105,12 +107,12 @@ class Blog
     }
 
     /**
-     * @param Object_BlogCategory $category
+     * @param \Object_BlogCategory $category
      * @param integer $page
      * @param integer $perpage
-     * @return Zend_Paginator
+     * @return \Zend_Paginator
      */
-    public function getListByCategory(Object_BlogCategory $category, $page = 1, $perpage = 10)
+    public function getListByCategory(\Object_BlogCategory $category, $page = 1, $perpage = 10)
     {
         $list = $this->_getList();
         $list->addConditionParam("categories LIKE ?", array("%,{$category->getId()},%"));
@@ -123,7 +125,7 @@ class Blog
      * @param string $month
      * @param integer $page
      * @param integer $perPage
-     * @return Zend_Paginator
+     * @return \Zend_Paginator
      */
     public function getListByDate($year, $month = null, $page = 1, $perPage = 10)
     {
@@ -131,17 +133,17 @@ class Blog
 
         if ($month < 1 || $month > 12) {
             $month = 0;
-            $date = new Zend_Date("$year-01-01", Zend_Date::ISO_8601);
+            $date = new \Zend_Date("$year-01-01", \Zend_Date::ISO_8601);
         } else {
             if (1 == strlen($month)) {
                 $month = "0$month";
             }
-            $date = new Zend_Date("$year-$month-01", Zend_Date::ISO_8601);
+            $date = new \Zend_Date("$year-$month-01", \Zend_Date::ISO_8601);
         }
 
         $from = (int) $date->getTimestamp();
         if ($month) {
-            $to = (int) $date->setDay($date->get(Zend_Date::MONTH_DAYS))->getTimestamp();
+            $to = (int) $date->setDay($date->get(\Zend_Date::MONTH_DAYS))->getTimestamp();
         } else {
             $to = (int) $date->setMonth(12)->setDay(31)->getTimestamp();
         }
@@ -153,11 +155,11 @@ class Blog
     }
 
     /**
-     * @return Object_BlogCategory_List
+     * @return \Object_BlogCategory_List
      */
     public function getCategories()
     {
-        $list = new Object_BlogCategory_List();
+        $list = new \Object_BlogCategory_List();
         $limit = (int) @$this->_options->snippet->category->limit;
         $list->setLimit($limit ? $limit : 10);
 
@@ -171,8 +173,8 @@ class Blog
         }
 
         // count entries in categories
-        $entry = new Object_BlogEntry();
-        $select = new Zend_Db_Select(Pimcore_Resource_Mysql::get()->getResource());
+        $entry = new \Object_BlogEntry();
+        $select = new \Zend_Db_Select(\Pimcore_Resource_Mysql::get()->getResource());
         $select
             ->from('object_relations_' . $entry->getClassId(), array(
                 'id' => 'dest_id', 'count' => 'count(*)'
@@ -212,12 +214,12 @@ class Blog
         $endDate = $this->getList($count, 1)->getIterator()->current()->getDate();
 
         while (1) {
-            $year = $date->get(Zend_Date::YEAR);
+            $year = $date->get(\Zend_Date::YEAR);
 
             $list = $this->_getList();
             $list->addConditionParam('date BETWEEN ? AND ?', array(
                 (int) $date->setDay(1)->getTimestamp(),
-                (int) $date->setDay($date->get(Zend_Date::MONTH_DAYS))->getTimestamp(),
+                (int) $date->setDay($date->get(\Zend_Date::MONTH_DAYS))->getTimestamp(),
             ));
             $count = $list->count();
 
@@ -225,10 +227,10 @@ class Blog
                 if (!isset($calendar[$year])) {
                     $calendar[$year] = array();
                 }
-                $month = $date->get(Zend_Date::MONTH_SHORT);
+                $month = $date->get(\Zend_Date::MONTH_SHORT);
                 $calendar[$year][$month] = array(
-                    'month' => Zend_Locale_Data::getContent(
-                        Zend_Registry::get('Zend_Locale'),
+                    'month' => \Zend_Locale_Data::getContent(
+                        \Zend_Registry::get('Zend_Locale'),
                         'month', array('gregorian', 'format', 'wide', $month)
                     ),
                     'count' => $count,
@@ -246,15 +248,15 @@ class Blog
 
     /**
      * @param string $format
-     * @return Zend_Feed_Abstract
+     * @return \Zend_Feed_Abstract
      */
     public function getFeed($format = 'rss')
     {
         if ($format != 'rss' && $format != 'atom') {
-            throw new Zend_Controller_Action_Exception("Feed type $format is not supported");
+            throw new \Zend_Controller_Action_Exception("Feed type $format is not supported");
         }
 
-        $url = new Pimcore_View_Helper_Url();
+        $url = new \Pimcore_View_Helper_Url();
 
         $host = 'http://' . $_SERVER['HTTP_HOST'];
         $feed = array(
@@ -272,13 +274,13 @@ class Blog
         }
 
         foreach ($this->getList() as $entry) {
-            if ($entry instanceof Object_BlogEntry) {
+            if ($entry instanceof \Object_BlogEntry) {
                 $description = '';
                 if (trim($entry->getSummary())) {
                     $description = $entry->getSummary();
                 } else {
                     if (class_exists('Website_Tool_Text')) {
-                        $description = Website_Tool_Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200);
+                        $description = \Website_Tool_Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200);
                     } elseif (class_exists('\\Website\\Tool\\Text')) {
                         $description = \Website\Tool\Text::cutStringRespectingWhitespace(trim(strip_tags($entry->getContent())), 200);
                     }
@@ -297,29 +299,29 @@ class Blog
             }
         }
 
-        return Zend_Feed::importArray($feed, $format);
+        return \Zend_Feed::importArray($feed, $format);
     }
 
     /**
-     * @return Object_BlogEntry_List
+     * @return \Object_BlogEntry_List
      */
     protected function _getList()
     {
-        $list = new Object_BlogEntry_List();
+        $list = new \Object_BlogEntry_List();
         $list->setOrderKey(array('date', 'o_id'));
         $list->setOrder(array('DESC', 'ASC'));
         return $list;
     }
 
     /**
-     * @param Object_BlogEntry_List $list
+     * @param \Object_BlogEntry_List $list
      * @param integer $page
      * @param integer $perPage
-     * @return Zend_Paginator
+     * @return \Zend_Paginator
      */
-    protected function _paginate(Object_BlogEntry_List $list, $page, $perPage)
+    protected function _paginate(\Object_BlogEntry_List $list, $page, $perPage)
     {
-        $paginator = new Zend_Paginator($list);
+        $paginator = new \Zend_Paginator($list);
         $paginator->setItemCountPerPage((int) $perPage);
         $paginator->setCurrentPageNumber((int) $page);
         $paginator->setPageRange(5);
